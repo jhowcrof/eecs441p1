@@ -10,6 +10,7 @@
 // Second commit Hello!
 
 #import "ViewController.h"
+#import <Collabrify/Collabrify.h>
 
 @interface ViewController ()
 
@@ -21,6 +22,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
 }
 
 - (void)didReceiveMemoryWarning
