@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Jacob Howcroft. All rights reserved.
 //
 
-// This is the first commit.  Hello World. 
+// This is the first commit.  Hello World.
+// Second commit Hello!
 
 #import "ViewController.h"
 
