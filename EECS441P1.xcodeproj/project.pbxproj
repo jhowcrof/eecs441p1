@@ -60,6 +60,7 @@
 		16A7B58A17DA6DC50034F02E /* wire_format_lite.cc in Sources */ = {isa = PBXBuildFile; fileRef = 16A7B56717DA6DC50034F02E /* wire_format_lite.cc */; };
 		16A7B58C17DA6E8E0034F02E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A7B58B17DA6E8E0034F02E /* SystemConfiguration.framework */; };
 		16A7B58E17DA6E9E0034F02E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 16A7B58D17DA6E9E0034F02E /* libz.dylib */; };
+		16ACAAB017E153E6005D1C19 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ACAAAF17E153E6005D1C19 /* ViewController2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +183,8 @@
 		16A7B56917DA6DC50034F02E /* wire_format_lite_inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wire_format_lite_inl.h; sourceTree = "<group>"; };
 		16A7B58B17DA6E8E0034F02E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		16A7B58D17DA6E9E0034F02E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		16ACAAAE17E153E6005D1C19 /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController2.h; path = ../ViewController2.h; sourceTree = "<group>"; };
+		16ACAAAF17E153E6005D1C19 /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController2.m; path = ../ViewController2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +253,8 @@
 		163DD42817DA3E1700AA4C3A /* EECS441P1 */ = {
 			isa = PBXGroup;
 			children = (
+				16ACAAAE17E153E6005D1C19 /* ViewController2.h */,
+				16ACAAAF17E153E6005D1C19 /* ViewController2.m */,
 				163DD43117DA3E1700AA4C3A /* AppDelegate.h */,
 				163DD43217DA3E1700AA4C3A /* AppDelegate.m */,
 				163DD43A17DA3E1700AA4C3A /* MainStoryboard.storyboard */,
@@ -263,6 +268,7 @@
 		163DD42917DA3E1700AA4C3A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				163DD44D17DA3E1700AA4C3A /* Supporting Files */,
 				163DD42A17DA3E1700AA4C3A /* EECS441P1-Info.plist */,
 				163DD42B17DA3E1700AA4C3A /* InfoPlist.strings */,
 				163DD42E17DA3E1700AA4C3A /* main.m */,
@@ -279,7 +285,6 @@
 			children = (
 				163DD45217DA3E1700AA4C3A /* EECS441P1Tests.h */,
 				163DD45317DA3E1700AA4C3A /* EECS441P1Tests.m */,
-				163DD44D17DA3E1700AA4C3A /* Supporting Files */,
 			);
 			path = EECS441P1Tests;
 			sourceTree = "<group>";
@@ -291,7 +296,8 @@
 				163DD44F17DA3E1700AA4C3A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
+			path = EECS441P1Tests;
+			sourceTree = SOURCE_ROOT;
 		};
 		16A7B51217DA6DC50034F02E /* Google Protocol Buffers */ = {
 			isa = PBXGroup;
@@ -536,6 +542,7 @@
 				163DD42F17DA3E1700AA4C3A /* main.m in Sources */,
 				163DD43317DA3E1700AA4C3A /* AppDelegate.m in Sources */,
 				163DD43F17DA3E1700AA4C3A /* ViewController.m in Sources */,
+				16ACAAB017E153E6005D1C19 /* ViewController2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

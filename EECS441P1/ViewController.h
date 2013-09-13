@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITextViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UITextView *myTextView;
+@property (strong, nonatomic) IBOutlet UIView *theView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+
+- (IBAction)doneButtonPressed:(id)sender;
 
 @end
