@@ -60,22 +60,34 @@
                                 </items>
                                 <color key="tintColor" red="0.93616253400000005" green="0.93616253400000005" blue="0.93616253400000005" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-qA-cL3">
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GZg-KR-csk">
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-qA-cL3">
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="trailing" secondItem="GZg-KR-csk" secondAttribute="trailing" type="default" id="1JP-NS-Khz"/>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="centerY" secondItem="GZg-KR-csk" secondAttribute="centerY" type="default" id="7B9-cQ-FV5"/>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="leading" secondItem="GZg-KR-csk" secondAttribute="leading" type="default" id="7dk-FL-S5f"/>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="centerX" secondItem="GZg-KR-csk" secondAttribute="centerX" type="default" id="8b0-X0-wOH"/>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="top" secondItem="GZg-KR-csk" secondAttribute="top" type="default" id="Y6U-8X-6sE"/>
+                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="bottom" secondItem="GZg-KR-csk" secondAttribute="bottom" type="default" id="oDB-d8-CvN"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.41182920049999999" green="1" blue="0.30986448589999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="GZg-KR-csk" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="0yw-7z-osN"/>
                             <constraint firstItem="uTI-42-FiA" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="BrC-M4-HsM"/>
-                            <constraint firstItem="PBI-qA-cL3" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="Jan-zy-Ma5"/>
+                            <constraint firstItem="GZg-KR-csk" firstAttribute="top" secondItem="uTI-42-FiA" secondAttribute="bottom" type="default" id="CsV-qm-Hhe"/>
                             <constraint firstItem="uTI-42-FiA" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="R7F-L7-DCY"/>
+                            <constraint firstItem="GZg-KR-csk" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="UGB-Lv-x10"/>
                             <constraint firstItem="uTI-42-FiA" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="cBu-H4-IcJ"/>
-                            <constraint firstItem="PBI-qA-cL3" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="clK-PX-MeH"/>
-                            <constraint firstItem="PBI-qA-cL3" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="khn-B9-0VK"/>
-                            <constraint firstItem="PBI-qA-cL3" firstAttribute="top" secondItem="uTI-42-FiA" secondAttribute="bottom" type="default" id="rTZ-6j-zBd"/>
+                            <constraint firstItem="GZg-KR-csk" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="drn-4L-wgF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6tb-g0-Zdq">
@@ -83,6 +95,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="myTextView" destination="PBI-qA-cL3" id="aKr-9V-woN"/>
+                        <outlet property="scrollView" destination="GZg-KR-csk" id="lko-9m-Rpk"/>
                         <outlet property="theView" destination="3" id="9cX-QG-ksK"/>
                     </connections>
                 </viewController>
