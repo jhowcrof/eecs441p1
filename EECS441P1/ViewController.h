@@ -14,7 +14,17 @@
 @property (strong, nonatomic) IBOutlet UITextView *myTextView;
 @property (strong, nonatomic) IBOutlet UIView *theView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *returnButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *undoButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *redoButton;
+@property (weak, nonatomic) NSMutableString *oldText;
 
 - (IBAction)doneButtonPressed:(id)sender;
+
+- (IBAction)segueBack:(id)sender;
+
+- (IBAction)undo:(id)sender;
+
+- (IBAction)redo:(id)sender;
 
 @end

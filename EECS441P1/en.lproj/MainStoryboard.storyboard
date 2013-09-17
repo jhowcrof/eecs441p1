@@ -12,30 +12,71 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4J-dg-RWu">
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Start">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="WeWrite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pia-ev-zry">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="cWQ-ID-fOp"/>
+                                    <constraint firstAttribute="width" constant="201" id="k6B-GL-eyf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="40"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTm-jI-c3E">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="gaL-mb-viH"/>
+                                    <constraint firstAttribute="height" constant="44" id="gfZ-bl-9qQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="25"/>
+                                <state key="normal" title="Create">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.65647628199999997" green="0.7653736109" blue="0.93616253400000005" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="2" kind="push" id="aG0-Fu-MZt"/>
+                                    <segue destination="2" kind="push" id="WQ0-5w-3iN"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOQ-dG-N3e">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="AC5-Jg-kHM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="25"/>
+                                <state key="normal" title="Join">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.65647628199999997" green="0.7653736109" blue="0.93616253400000005" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2" kind="push" id="MTC-8B-K0O"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Collabrified Text Editor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNg-ej-S3C">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="187" id="fr7-4F-Sit"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="b4J-dg-RWu" firstAttribute="top" secondItem="0o5-57-UpJ" secondAttribute="top" constant="230" id="BXN-MD-Jy2"/>
-                            <constraint firstItem="b4J-dg-RWu" firstAttribute="centerX" secondItem="0o5-57-UpJ" secondAttribute="centerX" type="default" id="PrQ-cC-Lh1"/>
+                            <constraint firstItem="JNg-ej-S3C" firstAttribute="top" secondItem="pia-ev-zry" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="BEj-P8-K2I"/>
+                            <constraint firstItem="JNg-ej-S3C" firstAttribute="centerX" secondItem="pia-ev-zry" secondAttribute="centerX" type="default" id="DDe-df-Tz3"/>
+                            <constraint firstItem="pia-ev-zry" firstAttribute="top" secondItem="0o5-57-UpJ" secondAttribute="top" constant="50" id="P0q-WY-4oW"/>
+                            <constraint firstItem="qTm-jI-c3E" firstAttribute="centerY" secondItem="0o5-57-UpJ" secondAttribute="centerY" type="default" id="ZZn-qE-ucp"/>
+                            <constraint firstItem="qTm-jI-c3E" firstAttribute="leading" secondItem="pia-ev-zry" secondAttribute="leading" type="default" id="eYm-vL-w27"/>
+                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="top" secondItem="qTm-jI-c3E" secondAttribute="top" type="default" id="fTy-Su-tKG"/>
+                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="bottom" secondItem="qTm-jI-c3E" secondAttribute="bottom" type="default" id="hgZ-y3-EEc"/>
+                            <constraint firstItem="JNg-ej-S3C" firstAttribute="centerX" secondItem="0o5-57-UpJ" secondAttribute="centerX" type="default" id="qtH-An-M9T"/>
+                            <constraint firstItem="pia-ev-zry" firstAttribute="trailing" secondItem="HOQ-dG-N3e" secondAttribute="trailing" type="default" id="tBc-XO-qmI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="UdZ-gW-zk9"/>
-                    <connections>
-                        <outlet property="startButton" destination="b4J-dg-RWu" id="hHW-up-F9k"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFp-GA-Wxz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -51,11 +92,24 @@
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uTI-42-FiA">
                                 <items>
+                                    <barButtonItem title="Return" id="rGr-1o-Agi">
+                                        <color key="tintColor" red="0.58149867485238871" green="0.68157400125225331" blue="0.84109629755434789" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="segueBack:" destination="2" id="oyT-xe-Mij"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="nPP-ay-d3u"/>
                                     <barButtonItem title="Undo" id="MWL-ry-kC2">
                                         <color key="tintColor" red="0.61026664402173914" green="0.61026664402173914" blue="0.61026664402173914" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="undo:" destination="2" id="Nqj-Qf-mSE"/>
+                                        </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Redo" id="aQu-lk-0Kg">
                                         <color key="tintColor" red="0.60757048233695654" green="0.60757048233695654" blue="0.60757048233695654" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="redo:" destination="2" id="Wvx-2l-5du"/>
+                                        </connections>
                                     </barButtonItem>
                                 </items>
                                 <color key="tintColor" red="0.93616253400000005" green="0.93616253400000005" blue="0.93616253400000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -64,7 +118,6 @@
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-qA-cL3">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -95,8 +148,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="myTextView" destination="PBI-qA-cL3" id="aKr-9V-woN"/>
+                        <outlet property="redoButton" destination="aQu-lk-0Kg" id="Oie-NI-Bw8"/>
+                        <outlet property="returnButton" destination="rGr-1o-Agi" id="OMg-Kb-ILw"/>
                         <outlet property="scrollView" destination="GZg-KR-csk" id="lko-9m-Rpk"/>
                         <outlet property="theView" destination="3" id="9cX-QG-ksK"/>
+                        <outlet property="undoButton" destination="MWL-ry-kC2" id="aim-F4-x7v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -130,10 +186,16 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="doneButtonPressed:"/>
+                <relationship kind="action" name="redo:"/>
+                <relationship kind="action" name="segueBack:"/>
+                <relationship kind="action" name="undo:"/>
                 <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="myTextView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="redoButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="returnButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="theView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="undoButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="ViewController2" superclassName="UIViewController">
@@ -148,4 +210,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="WQ0-5w-3iN"/>
+    </inferredMetricsTieBreakers>
 </document>
