@@ -12,22 +12,12 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="WeWrite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pia-ev-zry">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="49" id="cWQ-ID-fOp"/>
-                                    <constraint firstAttribute="width" constant="201" id="k6B-GL-eyf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="40"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTm-jI-c3E">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="gaL-mb-viH"/>
                                     <constraint firstAttribute="height" constant="44" id="gfZ-bl-9qQ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="25"/>
-                                <state key="normal" title="Create">
+                                <state key="normal" title="Create Group">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -38,12 +28,21 @@
                                     <segue destination="2" kind="push" id="WQ0-5w-3iN"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="WeWrite" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pia-ev-zry">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="201" id="ZjH-K9-4zF"/>
+                                    <constraint firstAttribute="height" constant="49" id="cWQ-ID-fOp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="40"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HOQ-dG-N3e">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="73" id="AC5-Jg-kHM"/>
+                                    <constraint firstAttribute="height" constant="44" id="SA5-ZM-2a6"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AcademyEngravedLetPlain" family="Academy Engraved LET" pointSize="25"/>
-                                <state key="normal" title="Join">
+                                <state key="normal" title="Join Group">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -65,18 +64,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="centerX" secondItem="0o5-57-UpJ" secondAttribute="centerX" type="default" id="9b4-Mj-HNK"/>
                             <constraint firstItem="JNg-ej-S3C" firstAttribute="top" secondItem="pia-ev-zry" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="BEj-P8-K2I"/>
                             <constraint firstItem="JNg-ej-S3C" firstAttribute="centerX" secondItem="pia-ev-zry" secondAttribute="centerX" type="default" id="DDe-df-Tz3"/>
+                            <constraint firstItem="pia-ev-zry" firstAttribute="centerX" secondItem="qTm-jI-c3E" secondAttribute="centerX" type="default" id="KhN-GT-198"/>
                             <constraint firstItem="pia-ev-zry" firstAttribute="top" secondItem="0o5-57-UpJ" secondAttribute="top" constant="50" id="P0q-WY-4oW"/>
-                            <constraint firstItem="qTm-jI-c3E" firstAttribute="centerY" secondItem="0o5-57-UpJ" secondAttribute="centerY" type="default" id="ZZn-qE-ucp"/>
-                            <constraint firstItem="qTm-jI-c3E" firstAttribute="leading" secondItem="pia-ev-zry" secondAttribute="leading" type="default" id="eYm-vL-w27"/>
-                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="top" secondItem="qTm-jI-c3E" secondAttribute="top" type="default" id="fTy-Su-tKG"/>
-                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="bottom" secondItem="qTm-jI-c3E" secondAttribute="bottom" type="default" id="hgZ-y3-EEc"/>
-                            <constraint firstItem="JNg-ej-S3C" firstAttribute="centerX" secondItem="0o5-57-UpJ" secondAttribute="centerX" type="default" id="qtH-An-M9T"/>
-                            <constraint firstItem="pia-ev-zry" firstAttribute="trailing" secondItem="HOQ-dG-N3e" secondAttribute="trailing" type="default" id="tBc-XO-qmI"/>
+                            <constraint firstItem="qTm-jI-c3E" firstAttribute="top" secondItem="0o5-57-UpJ" secondAttribute="top" constant="226" id="eDP-fk-4br"/>
+                            <constraint firstAttribute="bottom" secondItem="HOQ-dG-N3e" secondAttribute="bottom" constant="192" id="fYI-H8-VjB"/>
+                            <constraint firstItem="HOQ-dG-N3e" firstAttribute="centerX" secondItem="qTm-jI-c3E" secondAttribute="centerX" type="default" id="snB-Ja-3CA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="UdZ-gW-zk9"/>
+                    <connections>
+                        <outlet property="createGroupButton" destination="qTm-jI-c3E" id="tUe-XO-2xN"/>
+                        <outlet property="joinGroupButton" destination="HOQ-dG-N3e" id="WbU-GP-vGu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFp-GA-Wxz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -185,7 +187,6 @@
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
-                <relationship kind="action" name="doneButtonPressed:"/>
                 <relationship kind="action" name="redo:"/>
                 <relationship kind="action" name="segueBack:"/>
                 <relationship kind="action" name="undo:"/>
@@ -201,6 +202,8 @@
         <class className="ViewController2" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController2.h"/>
             <relationships>
+                <relationship kind="outlet" name="createGroupButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="joinGroupButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="startButton" candidateClass="UIButton"/>
             </relationships>
         </class>

@@ -11,5 +11,7 @@
 @interface ViewController2 : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
+@property (weak, nonatomic) IBOutlet UIButton *createGroupButton;
+@property (weak, nonatomic) IBOutlet UIButton *joinGroupButton;
 
 @end

@@ -51,6 +51,8 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,6 +81,11 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
+- (void)textViewDidChange:(UITextView *)textView{
+    NSLog(@"Text changed");
+    
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     NSLog(@"Begin editing");
     self.oldText = (NSMutableString *)self.myTextView.text;
@@ -87,8 +94,6 @@
 - (void)textViewDidEndEditing:(UITextView *)textView{
     NSLog(@"DidEndEditing");
     
-    NSLog(@"Can Undo = %s", [self.myTextView.undoManager canUndo] ? "true" : "false");
-    NSLog(@"Can Redo = %s", [self.myTextView.undoManager canRedo] ? "true" : "false");
     if (self.oldText != (NSMutableString *)self.myTextView.text){
         if ([self.myTextView.undoManager canUndo]){
             self.undoButton.enabled = YES;
@@ -120,6 +125,7 @@
 
 - (IBAction)redo:(id)sender{
     NSUndoManager *undoManager = self.myTextView.undoManager;
+    
     if ([undoManager canRedo]) [undoManager redo];
     if (![undoManager canRedo]) self.redoButton.enabled = NO;
     self.undoButton.enabled = YES;

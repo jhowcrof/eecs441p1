@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *redoButton;
 @property (weak, nonatomic) NSMutableString *oldText;
 
-- (IBAction)doneButtonPressed:(id)sender;
 
 - (IBAction)segueBack:(id)sender;
 
