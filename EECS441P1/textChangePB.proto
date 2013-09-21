@@ -1,0 +1,33 @@
+package textChange;
+
+message textChangeMessage{
+	// 1: SenderID
+	// 2: Type of change (Undo, Redo, Insert, Deletion and Cursor Change)
+	// 3: Message Trigger (Time, # Char, Spacebar)
+	// 4: Cursor Location Start
+	// 5: Cursor Location End
+	// 6: Content Modified (String Deleted/Inserted)
+	
+	enum changeTypeX{
+		UNDO = 1;
+		REDO = 2;
+		INSERT = 3;
+		DELETE = 4;
+		CURSORCHANGE = 5;
+		OTHERCTX = 6;
+	}
+
+	enum messageTriggerX{
+		TIME = 1;
+		NUMCHAR = 2;
+		SPACE = 3;
+		OTHERMTX = 4;
+	}
+
+	optional int32 senderID = 1;
+	optional changeTypeX changeType = 2;
+	optional messageTriggerX messageTrigger = 3;
+	optional int64 cursorLocationStart = 4;
+	optional int64 cursorLocationEnd = 5;
+	optional string contentModified = 6;
+}
