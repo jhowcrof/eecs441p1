@@ -63,6 +63,8 @@
 		16ACAAB017E153E6005D1C19 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 16ACAAAF17E153E6005D1C19 /* ViewController2.m */; };
 		81070B2717ED2AD80056D6D9 /* textChangePB.pb.mm in Sources */ = {isa = PBXBuildFile; fileRef = 81070B2517ED2AD80056D6D9 /* textChangePB.pb.mm */; };
 		81070B2817ED2AD80056D6D9 /* textChangePB.proto in Resources */ = {isa = PBXBuildFile; fileRef = 81070B2617ED2AD80056D6D9 /* textChangePB.proto */; };
+		81D7009E17EEB307008D3C1D /* pbWorker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 81D7009C17EEB307008D3C1D /* pbWorker.mm */; };
+		81D700A117EF86E1008D3C1D /* sessionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D700A017EF86E1008D3C1D /* sessionTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +192,10 @@
 		81070B2417ED2AD80056D6D9 /* textChangePB.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = textChangePB.pb.h; sourceTree = "<group>"; };
 		81070B2517ED2AD80056D6D9 /* textChangePB.pb.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = textChangePB.pb.mm; sourceTree = "<group>"; };
 		81070B2617ED2AD80056D6D9 /* textChangePB.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = textChangePB.proto; sourceTree = "<group>"; };
+		81D7009C17EEB307008D3C1D /* pbWorker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = pbWorker.mm; sourceTree = "<group>"; };
+		81D7009D17EEB307008D3C1D /* pbWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pbWorker.h; sourceTree = "<group>"; };
+		81D7009F17EF86E1008D3C1D /* sessionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sessionTableViewController.h; sourceTree = "<group>"; };
+		81D700A017EF86E1008D3C1D /* sessionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sessionTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,9 +228,11 @@
 		163DD41617DA3E1700AA4C3A = {
 			isa = PBXGroup;
 			children = (
+				81D7009C17EEB307008D3C1D /* pbWorker.mm */,
+				81D7009D17EEB307008D3C1D /* pbWorker.h */,
 				16A7B58D17DA6E9E0034F02E /* libz.dylib */,
+				16A7B51317DA6DC50034F02E /* google */,
 				16A7B58B17DA6E8E0034F02E /* SystemConfiguration.framework */,
-				16A7B51217DA6DC50034F02E /* Google Protocol Buffers */,
 				16A7B51117DA6DA20034F02E /* config.h */,
 				16A7B50D17DA6D6D0034F02E /* Collabrify.bundle */,
 				16A7B50E17DA6D6D0034F02E /* Collabrify.framework */,
@@ -266,6 +274,8 @@
 				163DD43117DA3E1700AA4C3A /* AppDelegate.h */,
 				163DD43217DA3E1700AA4C3A /* AppDelegate.m */,
 				163DD43A17DA3E1700AA4C3A /* MainStoryboard.storyboard */,
+				81D7009F17EF86E1008D3C1D /* sessionTableViewController.h */,
+				81D700A017EF86E1008D3C1D /* sessionTableViewController.m */,
 				163DD43D17DA3E1700AA4C3A /* ViewController.h */,
 				163DD43E17DA3E1700AA4C3A /* ViewController.m */,
 				163DD42917DA3E1700AA4C3A /* Supporting Files */,
@@ -307,20 +317,13 @@
 			path = EECS441P1Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		16A7B51217DA6DC50034F02E /* Google Protocol Buffers */ = {
-			isa = PBXGroup;
-			children = (
-				16A7B51317DA6DC50034F02E /* google */,
-			);
-			path = "Google Protocol Buffers";
-			sourceTree = "<group>";
-		};
 		16A7B51317DA6DC50034F02E /* google */ = {
 			isa = PBXGroup;
 			children = (
 				16A7B51417DA6DC50034F02E /* protobuf */,
 			);
-			path = google;
+			name = google;
+			path = "Google Protocol Buffers/google";
 			sourceTree = "<group>";
 		};
 		16A7B51417DA6DC50034F02E /* protobuf */ = {
@@ -550,7 +553,9 @@
 			files = (
 				163DD42F17DA3E1700AA4C3A /* main.m in Sources */,
 				163DD43317DA3E1700AA4C3A /* AppDelegate.m in Sources */,
+				81D700A117EF86E1008D3C1D /* sessionTableViewController.m in Sources */,
 				163DD43F17DA3E1700AA4C3A /* ViewController.m in Sources */,
+				81D7009E17EEB307008D3C1D /* pbWorker.mm in Sources */,
 				16ACAAB017E153E6005D1C19 /* ViewController2.m in Sources */,
 				81070B2717ED2AD80056D6D9 /* textChangePB.pb.mm in Sources */,
 			);
