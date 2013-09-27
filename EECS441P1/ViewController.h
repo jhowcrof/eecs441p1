@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController <UITextViewDelegate>
+@interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UITextView *myTextView;
@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *undoButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *redoButton;
 @property (weak, nonatomic) NSMutableString *oldText;
+@property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
 
 
 - (IBAction)segueBack:(id)sender;

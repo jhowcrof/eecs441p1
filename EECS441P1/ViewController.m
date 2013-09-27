@@ -35,6 +35,11 @@
                                                object:nil];
     
     self.myTextView.delegate = self;
+    self.topToolbar.delegate = self;
+    self.scrollView.delegate = self;
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     
     // Set up the above-keyboard toolbar and the Done button.
     UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -45,7 +50,7 @@
     
     // Configure the scrollView
     [self.scrollView setScrollEnabled:YES];
-    [self.scrollView setContentSize:CGSizeMake(400, 1000)];
+    [self.scrollView setContentSize:CGSizeMake(320, 500)];
     
     // Disable undo and redo buttons
     self.undoButton.enabled = NO;
