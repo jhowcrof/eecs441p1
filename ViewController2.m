@@ -29,6 +29,22 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    NSError *error;
+    [self setClient:[[CollabrifyClient alloc] initWithGmail:@"usersGmail@gmail.com"
+                                                displayName:@"User's Display Name"
+                                               accountGmail:@"441fall2013@umich.edu"
+                                                accessToken:@"XY3721425NoScOpE"
+                                             getLatestEvent:NO
+                                                      error:&error]];
+    
+    [self setTags:@[@"stuff"]];
+    [[self client] setDelegate:self];
+    [[self client] setDataSource:self];
+    
+    if (error) {
+        NSLog(@"error!!!!");
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,23 +56,51 @@
 - (IBAction)createGroupClick:(id)sender {
     // 1: Check if the device can connect to the internet
     if (![CollabrifyClient hasNetworkConnection]) {
-        UIAlertView *networkAlert = [[UIAlertView alloc] initWithTitle:@"Cannot Access Internet" message:@"Please check your connection and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *networkAlert = [[UIAlertView alloc]
+                                     initWithTitle:@"Cannot Access Internet"
+                                     message:@"Please check your connection and try again."
+                                     delegate:nil
+                                     cancelButtonTitle:@"Okay"
+                                     otherButtonTitles:nil, nil];
         [networkAlert show];
         return;
     }
     
     // 2: Ask if group is password protected or not
-    UIAlertView *passwordAlert = [[UIAlertView alloc] initWithTitle:@"Select a Configuration" message:@"Would you like to password protect access to your group?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    UIAlertView *passwordAlert = [[UIAlertView alloc]
+                                  initWithTitle:@"Select a Configuration"
+                                  message:@"Would you like to password protect access to your group?"
+                                  delegate:self
+                                  cancelButtonTitle:@"Yes"
+                                  otherButtonTitles:@"No", nil];
     [passwordAlert show];
     
     // 4: When the alert closes, save the string, open a new session and navigate to ViewController
     
+    
+}
+
+// Display an error when a required field is blank
+-(void)displayBlankError{
+    UIAlertView *blankError = [[UIAlertView alloc]
+                               initWithTitle:@"Error: Blank Fields"
+                               message:@"Please do not leave any fields blank. Enter a group name and password."
+                               delegate:self
+                               cancelButtonTitle:@"Okay"
+                               otherButtonTitles:nil, nil];
+    
+    [blankError show];
 }
 
 - (IBAction)joinGroupClicked:(id)sender {
     // 1: Check if the device can connect to the internet
     if (![CollabrifyClient hasNetworkConnection]) {
-        UIAlertView *networkAlert = [[UIAlertView alloc] initWithTitle:@"Cannot Access Internet" message:@"Please check your connection and try again." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *networkAlert = [[UIAlertView alloc]
+                                     initWithTitle:@"Cannot Access Internet"
+                                     message:@"Please check your connection and try again."
+                                     delegate:nil
+                                     cancelButtonTitle:@"Okay"
+                                     otherButtonTitles:nil, nil];
         [networkAlert show];
         return;
     }
@@ -82,9 +126,13 @@
             groupNameAlertTextField.placeholder = @"Group Name";
             groupPasswordTextField.placeholder = @"Password";
             [groupNameAlert show];
-        }
-        else{
-            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name" message:@"Please enter a name for your group." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+        } else {
+            UIAlertView *groupNameAlert = [[UIAlertView alloc]
+                                           initWithTitle:@"Enter a Group Name"
+                                           message:@"Please enter a name for your group."
+                                           delegate:self
+                                           cancelButtonTitle:@"Done"
+                                           otherButtonTitles:nil, nil];
             groupNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
             groupNameAlertTextField.placeholder = @"Group Name";
@@ -94,42 +142,72 @@
     }
     else if([alertView.title isEqual:@"Enter a Group Name and Password"]){
         // 1: Make sure password and group name are not blank
-        UITextField *groupNameUITF = [alertView textFieldAtIndex:0];
-        UITextField *passwordUITF = [alertView textFieldAtIndex:1];
-        if([groupNameUITF.text  isEqual: @""] || [passwordUITF.text isEqual:@""]){
-            UIAlertView *blankError = [[UIAlertView alloc] initWithTitle:@"Error: Blank Fields" message:@"Please do not leave any fields blank. Enter a group name and password." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-            [blankError show];
-        }
-        else{
+        NSString *groupName = [alertView textFieldAtIndex:0].text;
+        NSString *password = [alertView textFieldAtIndex:1].text;
+        if ([groupName  isEqual: @""] || [password isEqual:@""]){
+            [self displayBlankError];
+        } else {
+            // 2: Create new session with given strings
+            NSLog(@"Before create session");
             
-            // 2: Create new group with given strings
-            CollabrifyClient *clientX = [[CollabrifyClient alloc] init];
-            int64_t *sessionID;
-            CollabrifyError *errorReturned;
-            //[clientX createSessionWithBaseFileWithName:groupNameUITF.text tags:nil password:passwordUITF.text participantLimit:500 startPaused:true completionHandler:<#^(int64_t sessionID, CollabrifyError *error)completionHandler#>]
+            [[self client] createSessionWithBaseFileWithName:groupName
+                                                        tags:[self tags]
+                                                    password:password
+                                            participantLimit:500
+                                                 startPaused:YES
+                                           completionHandler:^(int64_t sessionID, CollabrifyError *error) {
+                                               NSLog(@"In completion handler");
+                                               
+                                               if (error) {
+                                                   
+                                               } else {
+                                                   // 3: Segue on success
+                                                   [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                               }
+                                           }];
             
-            // 3: Segue on success
-            [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+            NSLog(@"Does this happen");
+            
         }
-    }
-    else if([alertView.title isEqual:@"Enter a Group Name"]){
+    } else if ([alertView.title isEqual:@"Enter a Group Name"]){
         // 1: Make sure group name is not blank
-        UITextField *groupNameUITF = [alertView textFieldAtIndex:0];
-        if([groupNameUITF.text  isEqual: @""]){
-            UIAlertView *blankError = [[UIAlertView alloc] initWithTitle:@"Error: Blank Fields" message:@"Please do not leave any fields blank. Enter a group name." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-            [blankError show];
-        }
-        else{
-            // 2: Create new group with given strings
+        NSString *groupName = [alertView textFieldAtIndex:0].text;
+        if([groupName isEqual: @""]){
+            [self displayBlankError];
+        } else {
+            // 2: Create new session with given strings
+            NSLog(@"Before create session");
             
+            [[self client] createSessionWithBaseFileWithName:groupName
+                                                        tags:[self tags]
+                                                    password:nil
+                                            participantLimit:500
+                                                 startPaused:YES
+                                           completionHandler:^(int64_t sessionID, CollabrifyError *error) {
+                                               NSLog(@"In completion handler");
+                                               
+                                               if (error) {
+                                                   
+                                               } else {
+                                                   // 3: Segue on success
+                                                   [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                               }
+                                           }];
+            
+            NSLog(@"Does this happen");
+
             // 3: Segue on success
             [self performSegueWithIdentifier:@"VC2toVC" sender:self];
 
         }
-    }
-    else if([alertView.title isEqual:@"Error: Blank Fields"]){
-        if([alertView.message isEqual:@"Please do not leave any fields blank. Enter a group name and password."]){
-            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name and Password" message:@"Please enter a name for your group and a access password." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+    } else if ([alertView.title isEqual:@"Error: Blank Fields"]){
+        if ([alertView.message isEqual:@"Please do not leave any fields blank. Enter a group name and password."]){
+            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name and Password"
+                                                                     message:@"Please enter a name for your group and an access password."
+                                                                    delegate:self
+                                                            cancelButtonTitle:@"Done"
+                                                           otherButtonTitles:nil, nil];
+            
             groupNameAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
             UITextField *groupPasswordTextField = [groupNameAlert textFieldAtIndex:1];
@@ -146,4 +224,30 @@
         }
     }
 }
+
+-(NSData *)client:(CollabrifyClient *)client requestsBaseFileChunkForCurrentBaseFileSize:(NSInteger)baseFileSize{
+    if (![self data]) {
+        NSString *stringdata = @"TEST";
+        [self setData:[stringdata dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    NSInteger length = [[self data] length] - baseFileSize;
+    
+    if (length == 0) {
+        return nil;
+    }
+    
+    return [NSData dataWithBytes:([[self data] bytes] + baseFileSize) length:length];
+}
+
+// Transfer the client and other information to the next ViewController on segue.
+// Got this function from Matt Price on stackoverflow: http://stackoverflow.com/a/9736559/2390856
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:@"VC2toVC"]){
+        ViewController *controller = (ViewController *)segue.destinationViewController;
+        controller.client = [self client];
+        controller.tags = [self tags];
+    }
+}
+
 @end

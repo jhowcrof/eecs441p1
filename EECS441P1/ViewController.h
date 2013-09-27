@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "../Collabrify.framework/Headers/Collabrify.h"
 
-@interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate>
+@interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UITextView *myTextView;
@@ -19,8 +20,10 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *redoButton;
 @property (weak, nonatomic) NSMutableString *oldText;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
-@property CGRect _oldRect;
+@property CGRect oldRect;
 @property (weak, nonatomic)  NSTimer *caretVisibilityTimer;
+@property (nonatomic) CollabrifyClient *client;
+@property (nonatomic) NSArray *tags;
 
 
 

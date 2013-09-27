@@ -85,7 +85,7 @@
     insets = self.myTextView.scrollIndicatorInsets;
     insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     self.myTextView.scrollIndicatorInsets = insets;
-    self._oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
+    self.oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
     self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
     self.oldText = (NSMutableString *)self.myTextView.text;
@@ -111,7 +111,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
    // NSLog(@"Begin editing");
-    self._oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
+    self.oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
     self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
     self.oldText = (NSMutableString *)self.myTextView.text;
@@ -170,10 +170,10 @@
     //This is where the cursor is at.
     CGRect caretRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
-    if(CGRectEqualToRect(caretRect, self._oldRect))
+    if(CGRectEqualToRect(caretRect, self.oldRect))
         return;
     
-    self._oldRect = caretRect;
+    self.oldRect = caretRect;
     
     //This is the visible rect of the textview.
     CGRect visibleRect = self.myTextView.bounds;
