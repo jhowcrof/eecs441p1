@@ -59,7 +59,6 @@
                                 </state>
                                 <connections>
                                     <action selector="joinGroupClicked:" destination="LVr-mF-qk7" eventType="touchUpInside" id="82Y-B6-j9s"/>
-                                    <segue destination="F0B-sm-mE3" kind="push" id="Mc3-Ty-poh"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Collabrified Text Editor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JNg-ej-S3C">
@@ -94,53 +93,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yFp-GA-Wxz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="329" y="-326"/>
-        </scene>
-        <!--Session Table View Controller-->
-        <scene sceneID="7TA-s4-f16">
-            <objects>
-                <tableViewController id="F0B-sm-mE3" customClass="sessionTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="0.0" sectionHeaderHeight="22" sectionFooterHeight="22" id="EgH-8f-vSD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="0.0" id="7hR-5z-VPd">
-                                <rect key="frame" x="0.0" y="22" width="320" height="0.0"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7hR-5z-VPd" id="J1x-Z5-9C4">
-                                    <rect key="frame" x="0.0" y="-1" width="320" height="1"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="F0B-sm-mE3" id="D15-B2-36w"/>
-                            <outlet property="delegate" destination="F0B-sm-mE3" id="eLM-ov-SBI"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="a7c-xw-EfC"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vsE-3h-AhX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="y9F-MN-E0g">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <items>
-                        <barButtonItem style="plain" id="Vgd-1f-W10">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="beh-ea-Wyp">
-                                <rect key="frame" x="16" y="7" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Back">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="backButtonClicked:" destination="F0B-sm-mE3" eventType="touchUpInside" id="CJO-I7-qDL"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
-            </objects>
-            <point key="canvasLocation" x="829" y="336"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="5">
