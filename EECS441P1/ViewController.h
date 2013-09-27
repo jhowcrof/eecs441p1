@@ -23,6 +23,7 @@
 @property CGRect oldRect;
 @property (weak, nonatomic)  NSTimer *caretVisibilityTimer;
 @property (nonatomic) CollabrifyClient *client;
+@property (nonatomic) CollabrifySession *session;
 @property (nonatomic) NSArray *tags;
 
 

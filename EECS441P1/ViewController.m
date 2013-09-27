@@ -36,7 +36,7 @@
     
     self.myTextView.delegate = self;
     self.topToolbar.delegate = self;
-    self.scrollView.delegate = self;
+    //self.scrollView.delegate = self;
     self.myTextView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
@@ -51,8 +51,8 @@
     keyboardToolbar.items = [NSArray arrayWithObject:keyboardDoneButton];
     
     // Configure the scrollView
-    [self.scrollView setScrollEnabled:YES];
-    [self.scrollView setContentSize:CGSizeMake(320, 500)];
+    //[self.scrollView setScrollEnabled:YES];
+    //[self.scrollView setContentSize:CGSizeMake(320, 500)];
     
     // Disable undo and redo buttons
     self.undoButton.enabled = NO;
@@ -70,9 +70,11 @@
 
 // Called when the keyboard opens
 - (void)keyboardOpened:(NSNotification *) notification{
-    /*NSLog(@"keyboard opened");
+    NSLog(@"keyboard opened");
     // This code came from the iOS Developer Guide
-    NSDictionary* info = [notification userInfo];
+    
+    // This is what worked on iOS 6
+    /* NSDictionary* info = [notification userInfo];
     CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
     self.scrollView.contentInset = contentInsets;
@@ -80,14 +82,19 @@
     
     UIEdgeInsets insets = self.myTextView.contentInset;
     insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    insets.bottom += self.myTextView.inputAccessoryView.frame.size.height;
     self.myTextView.contentInset = insets;
     
     insets = self.myTextView.scrollIndicatorInsets;
     insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    insets.bottom += self.myTextView.inputAccessoryView.frame.size.height;
     self.myTextView.scrollIndicatorInsets = insets;
     self.oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
-    self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
+    if (![self.caretVisibilityTimer isValid]) {
+        self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
+    }
+    
     self.oldText = (NSMutableString *)self.myTextView.text;
 }
 
@@ -97,10 +104,12 @@
     // This code came from the iOS Developer Guide
     UIEdgeInsets insets = self.myTextView.contentInset;
     insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+    insets.bottom -= self.myTextView.inputAccessoryView.frame.size.height;
     self.myTextView.contentInset = insets;
     
     insets = self.myTextView.scrollIndicatorInsets;
     insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+    insets.bottom -= self.myTextView.inputAccessoryView.frame.size.height;
     self.myTextView.scrollIndicatorInsets = insets;
 }
 
@@ -113,7 +122,9 @@
    // NSLog(@"Begin editing");
     self.oldRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
-    self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
+    if (![self.caretVisibilityTimer isValid]) {
+        self.caretVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(scrollCaretToVisible) userInfo:nil repeats:YES];
+    }
     self.oldText = (NSMutableString *)self.myTextView.text;
 }
 
@@ -168,6 +179,7 @@
 
 - (void)scrollCaretToVisible{
     //This is where the cursor is at.
+    NSLog(@"moving to cursor");
     CGRect caretRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
     if(CGRectEqualToRect(caretRect, self.oldRect))

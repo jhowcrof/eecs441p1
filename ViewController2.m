@@ -38,7 +38,7 @@
                                              getLatestEvent:NO
                                                       error:&error]];
     
-    [self setTags:@[@"stuff"]];
+    [self setTags:@[@"jhjk"]];
     [[self client] setDelegate:self];
     [[self client] setDataSource:self];
     
@@ -52,6 +52,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)joinSession:(NSString *)password {
+    [[self client] joinSessionWithID:[self session].sessionID password:password completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
+        
+    }];
 }
 
 - (IBAction)createGroupClick:(id)sender {
@@ -82,10 +88,10 @@
 }
 
 // Display an error when a required field is blank
--(void)displayBlankError{
+-(void)displayBlankError:(NSString *)message{
     UIAlertView *blankError = [[UIAlertView alloc]
                                initWithTitle:@"Error: Blank Fields"
-                               message:@"Please do not leave any fields blank. Enter a group name and password."
+                               message:message
                                delegate:self
                                cancelButtonTitle:@"Okay"
                                otherButtonTitles:nil, nil];
@@ -123,7 +129,12 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if ([alertView.title isEqual:@"Select a Configuration"]) {
         if (buttonIndex == 0) {
-            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name and Password" message:@"Please enter a name for your group and a access password." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+            UIAlertView *groupNameAlert = [[UIAlertView alloc]
+                                           initWithTitle:@"Enter a Group Name and Password"
+                                           message:@"Please enter a name for your group and a access password."
+                                           delegate:self
+                                           cancelButtonTitle:@"Done"
+                                           otherButtonTitles:@"Cancel", nil];
             groupNameAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
             UITextField *groupPasswordTextField = [groupNameAlert textFieldAtIndex:1];
@@ -136,7 +147,7 @@
                                            message:@"Please enter a name for your group."
                                            delegate:self
                                            cancelButtonTitle:@"Done"
-                                           otherButtonTitles:nil, nil];
+                                           otherButtonTitles:@"Cancel", nil];
             groupNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
             groupNameAlertTextField.placeholder = @"Group Name";
@@ -145,10 +156,11 @@
 
     } else if ([alertView.title isEqual:@"Enter a Group Name and Password"]) {
         // 1: Make sure password and group name are not blank
+        if (buttonIndex != 0) return;
         NSString *groupName = [alertView textFieldAtIndex:0].text;
         NSString *password = [alertView textFieldAtIndex:1].text;
         if ([groupName  isEqual: @""] || [password isEqual:@""]){
-            [self displayBlankError];
+            [self displayBlankError:@"Please do not leave any fields blank. Enter a group name and password."];
         } else {
             // 2: Create new session with given strings
             NSLog(@"Before create session");
@@ -172,9 +184,10 @@
         }
     } else if ([alertView.title isEqual:@"Enter a Group Name"]){
         // 1: Make sure group name is not blank
+        if (buttonIndex != 0) return;
         NSString *groupName = [alertView textFieldAtIndex:0].text;
         if([groupName isEqual: @""]){
-            [self displayBlankError];
+            [self displayBlankError:@"Please do not leave any fields blank. Enter a group name."];
         } else {
             // 2: Create new session with given strings
             NSLog(@"Before create session");
@@ -204,15 +217,15 @@
     
     // If there is a blank field
     } else if ([alertView.title isEqual:@"Error: Blank Fields"]){
-        
+        UIAlertView *groupNameAlert;
         // If it is for create group with password
         if ([alertView.message isEqual:@"Please do not leave any fields blank. Enter a group name and password."]){
-            UIAlertView *groupNameAlert = [[UIAlertView alloc]
+            groupNameAlert = [[UIAlertView alloc]
                                            initWithTitle:@"Enter a Group Name and Password"
                                            message:@"Please enter a name for your group and an access password."
                                            delegate:self
                                            cancelButtonTitle:@"Done"
-                                           otherButtonTitles:nil, nil];
+                                           otherButtonTitles:@"Cancel", nil];
             
             groupNameAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
@@ -223,12 +236,12 @@
             
         // If it is for group without password
         } else {
-            UIAlertView *groupNameAlert = [[UIAlertView alloc]
+            groupNameAlert = [[UIAlertView alloc]
                                            initWithTitle:@"Enter a Group Name"
                                                 message:@"Please enter a name for your group."
                                                 delegate:self
                                            cancelButtonTitle:@"Done"
-                                           otherButtonTitles:nil, nil];
+                                           otherButtonTitles:@"Cancel", nil];
             
             groupNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
             UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
@@ -236,11 +249,46 @@
             [groupNameAlert show];
         }
     } else if ([alertView.title isEqual:@"Enter the Group Name"]) {
+        if (buttonIndex != 0) return;
         NSString *response = [alertView textFieldAtIndex:0].text;
-        
-        NSLog(@"response");
+        [[self client] listSessionsWithTags:@[@"jhjk"]
+                          completionHandler:^(NSArray *sessionList, CollabrifyError *error) {
+                                NSUInteger result = [sessionList indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
+                                    CollabrifySession* sesh = obj;
+                                    if ([sesh.sessionName isEqualToString:response]) {
+                                        NSLog(@"FOUND!!!!!!!!");
+                                        *stop = YES;
+                                        return YES;
+                                    } else return NO;
+                                }];
+                              
+                              NSLog(@"Found session with name %@.  Session index is %d", response, result);
+                              if (result != NSNotFound) {
+                                  [self setSession:sessionList[result]];
+                                  if ([[self session] isPasswordProtected]) {
+                                      UIAlertView *joinSessionWithPassword = [[UIAlertView alloc] initWithTitle:@"Enter Group Password"
+                                                                                                        message:@"Please enter the password for the group."
+                                                                                                       delegate:self
+                                                                                              cancelButtonTitle:@"Join"
+                                                                                              otherButtonTitles:@"Cancel", nil];
+                                      
+                                      [joinSessionWithPassword setAlertViewStyle:UIAlertViewStyleSecureTextInput];
+                                      UITextField *passwordField = [joinSessionWithPassword textFieldAtIndex:0];
+                                      passwordField.placeholder = @"Group Password";
+                                      [joinSessionWithPassword show];
+                                  } else {
+                                      [self joinSession:@""];
+                                  }
+                              }
+                              
+                          }];
+    } else if ([alertView.title isEqual:@"Enter Group Password"]) {
+        NSString *password = [alertView textFieldAtIndex:0].text;
+        [self joinSession:password];
     }
 }
+
+
 
 -(NSData *)client:(CollabrifyClient *)client requestsBaseFileChunkForCurrentBaseFileSize:(NSInteger)baseFileSize{
     if (![self data]) {
@@ -264,6 +312,7 @@
         ViewController *controller = (ViewController *)segue.destinationViewController;
         controller.client = [self client];
         controller.tags = [self tags];
+        controller.session = [self session];
     }
 }
 

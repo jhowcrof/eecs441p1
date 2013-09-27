@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *joinGroupButton;
 @property (strong, nonatomic) NSData *data;
 @property (strong, nonatomic) CollabrifyClient *client;
+@property (strong, nonatomic) CollabrifySession *session;
 @property (strong, nonatomic) NSArray *tags;
 
 @end
