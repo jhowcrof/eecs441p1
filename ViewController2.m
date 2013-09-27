@@ -93,8 +93,57 @@
 
     }
     else if([alertView.title isEqual:@"Enter a Group Name and Password"]){
-        
-        [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+        // 1: Make sure password and group name are not blank
+        UITextField *groupNameUITF = [alertView textFieldAtIndex:0];
+        UITextField *passwordUITF = [alertView textFieldAtIndex:1];
+        if([groupNameUITF.text  isEqual: @""] || [passwordUITF.text isEqual:@""]){
+            UIAlertView *blankError = [[UIAlertView alloc] initWithTitle:@"Error: Blank Fields" message:@"Please do not leave any fields blank. Enter a group name and password." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+            [blankError show];
+        }
+        else{
+            
+            // 2: Create new group with given strings
+            CollabrifyClient *clientX = [[CollabrifyClient alloc] init];
+            int64_t *sessionID;
+            CollabrifyError *errorReturned;
+            //[clientX createSessionWithBaseFileWithName:groupNameUITF.text tags:nil password:passwordUITF.text participantLimit:500 startPaused:true completionHandler:<#^(int64_t sessionID, CollabrifyError *error)completionHandler#>]
+            
+            // 3: Segue on success
+            [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+        }
+    }
+    else if([alertView.title isEqual:@"Enter a Group Name"]){
+        // 1: Make sure group name is not blank
+        UITextField *groupNameUITF = [alertView textFieldAtIndex:0];
+        if([groupNameUITF.text  isEqual: @""]){
+            UIAlertView *blankError = [[UIAlertView alloc] initWithTitle:@"Error: Blank Fields" message:@"Please do not leave any fields blank. Enter a group name." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+            [blankError show];
+        }
+        else{
+            // 2: Create new group with given strings
+            
+            // 3: Segue on success
+            [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+
+        }
+    }
+    else if([alertView.title isEqual:@"Error: Blank Fields"]){
+        if([alertView.message isEqual:@"Please do not leave any fields blank. Enter a group name and password."]){
+            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name and Password" message:@"Please enter a name for your group and a access password." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+            groupNameAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+            UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
+            UITextField *groupPasswordTextField = [groupNameAlert textFieldAtIndex:1];
+            groupNameAlertTextField.placeholder = @"Group Name";
+            groupPasswordTextField.placeholder = @"Password";
+            [groupNameAlert show];
+        }
+        else{
+            UIAlertView *groupNameAlert = [[UIAlertView alloc] initWithTitle:@"Enter a Group Name" message:@"Please enter a name for your group." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+            groupNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            UITextField *groupNameAlertTextField = [groupNameAlert textFieldAtIndex:0];
+            groupNameAlertTextField.placeholder = @"Group Name";
+            [groupNameAlert show];
+        }
     }
 }
 @end
