@@ -106,7 +106,7 @@
             CollabrifyClient *clientX = [[CollabrifyClient alloc] init];
             int64_t *sessionID;
             CollabrifyError *errorReturned;
-            [clientX createSessionWithBaseFileWithName:groupNameUITF.text tags:nil password:passwordUITF.text participantLimit:500 startPaused:true completionHandler:<#^(int64_t sessionID, CollabrifyError *error)completionHandler#>]
+            //[clientX createSessionWithBaseFileWithName:groupNameUITF.text tags:nil password:passwordUITF.text participantLimit:500 startPaused:true completionHandler:<#^(int64_t sessionID, CollabrifyError *error)completionHandler#>]
             
             // 3: Segue on success
             [self performSegueWithIdentifier:@"VC2toVC" sender:self];
