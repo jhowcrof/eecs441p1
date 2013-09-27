@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *redoButton;
 @property (weak, nonatomic) NSMutableString *oldText;
 @property (weak, nonatomic) IBOutlet UIToolbar *topToolbar;
+@property CGRect _oldRect;
+@property (weak, nonatomic)  NSTimer *caretVisibilityTimer;
+
 
 
 - (IBAction)segueBack:(id)sender;

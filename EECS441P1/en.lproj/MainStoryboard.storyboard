@@ -154,6 +154,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-qA-cL3">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uTI-42-FiA">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <rect key="contentStretch" x="0.0" y="0.15000000000000002" width="1" height="1"/>
@@ -180,33 +186,8 @@
                                 </items>
                                 <color key="tintColor" red="0.93616253400000005" green="0.93616253400000005" blue="0.93616253400000005" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GZg-KR-csk">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-qA-cL3">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="trailing" secondItem="GZg-KR-csk" secondAttribute="trailing" id="1JP-NS-Khz"/>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="centerY" secondItem="GZg-KR-csk" secondAttribute="centerY" constant="-0.5" id="7B9-cQ-FV5"/>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="leading" secondItem="GZg-KR-csk" secondAttribute="leading" id="7dk-FL-S5f"/>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="centerX" secondItem="GZg-KR-csk" secondAttribute="centerX" id="8b0-X0-wOH"/>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="top" secondItem="GZg-KR-csk" secondAttribute="top" constant="-1" id="Y6U-8X-6sE"/>
-                                    <constraint firstItem="PBI-qA-cL3" firstAttribute="bottom" secondItem="GZg-KR-csk" secondAttribute="bottom" id="oDB-d8-CvN"/>
-                                </constraints>
-                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="GZg-KR-csk" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" id="0yw-7z-osN"/>
-                            <constraint firstItem="GZg-KR-csk" firstAttribute="top" secondItem="3" secondAttribute="top" constant="64" id="C7d-Jy-iw6"/>
-                            <constraint firstItem="GZg-KR-csk" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" id="UGB-Lv-x10"/>
-                            <constraint firstItem="GZg-KR-csk" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="drn-4L-wgF"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6tb-g0-Zdq">
                         <nil key="title"/>
@@ -215,7 +196,6 @@
                         <outlet property="myTextView" destination="PBI-qA-cL3" id="aKr-9V-woN"/>
                         <outlet property="redoButton" destination="aQu-lk-0Kg" id="Oie-NI-Bw8"/>
                         <outlet property="returnButton" destination="rGr-1o-Agi" id="OMg-Kb-ILw"/>
-                        <outlet property="scrollView" destination="GZg-KR-csk" id="lko-9m-Rpk"/>
                         <outlet property="theView" destination="3" id="9cX-QG-ksK"/>
                         <outlet property="undoButton" destination="MWL-ry-kC2" id="aim-F4-x7v"/>
                     </connections>
