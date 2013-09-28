@@ -30,6 +30,7 @@
     [super viewDidLoad];
 
     // Initialize the CollabrifyClient
+    if ([self client]) NSLog(@"Client already initialized");
     NSError *error;
     [self setClient:[[CollabrifyClient alloc] initWithGmail:@"usersGmail@gmail.com"
                                                 displayName:@"User's Display Name"
@@ -197,10 +198,18 @@
                                                                              
                                                                              if (error) {
                                                                                  // Do something
+                                                                                 NSLog(@"Error");
                                                                              } else {
-                                                                                 // 3: Segue on success
-                                                                                 NSLog(@"SEGUE to new VC");
-                                                                                 [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                                 // 3: Join session on success
+                                                                                 
+                                                                                 [[self client] joinSessionWithID:sessionID password:password completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
+                                                                                     if (error) {
+                                                                                         NSLog(@"Error: %@", [error class]);
+                                                                                     } else {
+                                                                                         NSLog(@"SEGUE to new VC");
+                                                                                         [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                                     }
+                                                                                 }];
                                                                              }
                                                                          }];
 
@@ -233,7 +242,11 @@
                                   
                                   
                                   if (result != NSNotFound) {
-                                      UIAlertView *sessionPresentError = [[UIAlertView alloc] initWithTitle:@"Group Name Already In Use" message:@"Please provide a different group name." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                                      UIAlertView *sessionPresentError = [[UIAlertView alloc] initWithTitle:@"Group Name Already In Use"
+                                                                                                    message:@"Please provide a different group name."
+                                                                                                   delegate:self
+                                                                                          cancelButtonTitle:@"Okay"
+                                                                                          otherButtonTitles:nil, nil];
                                       [sessionPresentError show];
                                       NSLog(@"Gets to the found block");
                                   } else {
@@ -249,9 +262,16 @@
                                                                          if (error) {
                                                                              NSLog(@"ERROR for create session");
                                                                          } else {
-                                                                             // 3: Segue on success
-                                                                             NSLog(@"SEGUE to new VC");
-                                                                             [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                             // 3: Join session on success
+                                                                             
+                                                                             //[[self client] joinSessionWithID:sessionID password:@"" completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
+                                                                                 //if (error) {
+                                                                                   //  NSLog(@"Error: %@", [error class]);
+                                                                                 //} else {
+                                                                                     NSLog(@"SEGUE to new VC");
+                                                                                     [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                                 //}
+                                                                             //}];
                                                                          }
                                                                      }];
                                   }
@@ -368,6 +388,7 @@
 // Got this function from Matt Price on stackoverflow: http://stackoverflow.com/a/9736559/2390856
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"VC2toVC"]){
+        NSLog(@"passing client to new VC");
         ViewController *controller = (ViewController *)segue.destinationViewController;
         controller.client = [self client];
         controller.tags = [self tags];

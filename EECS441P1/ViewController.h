@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "../Collabrify.framework/Headers/Collabrify.h"
 
-@interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate>
+@interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate, UIAlertViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UITextView *myTextView;

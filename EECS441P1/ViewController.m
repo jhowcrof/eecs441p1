@@ -68,6 +68,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *title = alertView.title;
+    if ([title isEqual:@"Leaving Group"]) {
+         NSLog(@"wheres waldo");
+        if (buttonIndex == 0) {
+            // Delete
+            [[self client] leaveAndDeleteSession:YES completionHandler:^(BOOL success, CollabrifyError *error) {
+                 NSLog(@"delete!!!!");
+                if (success) {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                } else {
+                    NSLog(@"Error: %@", [error class]);
+                }
+            }];
+        } else {
+            [[self client] leaveAndDeleteSession:NO completionHandler:^(BOOL success, CollabrifyError *error) {
+                 NSLog(@"no delete");
+                if (success) {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                } else {
+                    NSLog(@"Error: %@", [error class]);
+                }
+            }];
+        }
+    }
+}
+
 // Called when the keyboard opens
 - (void)keyboardOpened:(NSNotification *) notification{
     NSLog(@"keyboard opened");
@@ -152,8 +179,20 @@
 }
 
 - (IBAction)segueBack:(id)sender{
-    //NSLog(@"Return button pressed");
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    NSLog(@"Return button pressed");
+    if ([[self client] participantID] == [[self client] currentSessionOwner].participantID) {
+        NSLog(@"I am owner");
+        [self ownerLeaveSession];
+    } else {
+        NSLog(@"Not owner");
+        [[self client] leaveAndDeleteSession:NO completionHandler:^(BOOL success, CollabrifyError *error) {
+            if (success) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
+        }];
+    }
+    
+    
 }
 
 - (IBAction)undo:(id)sender{
@@ -201,6 +240,18 @@
         
         [self.myTextView setContentOffset:newOffset animated:YES];
     }
+    
+    
+}
+
+-(void)ownerLeaveSession{
+    UIAlertView *ownerLeaveSessionAlert = [[UIAlertView alloc] initWithTitle:@"Leaving Group"
+                                                                     message:@"Do you want to delete this group?"
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Yes"
+                                                           otherButtonTitles:@"No", nil];
+    
+    [ownerLeaveSessionAlert show];
 }
 
 @end
