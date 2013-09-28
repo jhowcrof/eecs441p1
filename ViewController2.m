@@ -56,6 +56,12 @@
 
 - (void)joinSession:(NSString *)password {
     [[self client] joinSessionWithID:[self session].sessionID password:password completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
+        if([error type] == CollabrifyServerSideErrorInvalidSessionPassword){
+            UIAlertView *passwordInvalidError = [[UIAlertView alloc] initWithTitle:@"Invalid Password" message:@"The password you have entered invalid" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+            [passwordInvalidError show];
+        } else {
+            [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+        }
         
     }];
 }
@@ -164,21 +170,44 @@
         } else {
             // 2: Create new session with given strings
             NSLog(@"Before create session");
-            [[self client] createSessionWithBaseFileWithName:groupName
-                                                        tags:[self tags]
-                                                    password:password
-                                            participantLimit:500
-                                                 startPaused:YES
-                                           completionHandler:^(int64_t sessionID, CollabrifyError *error) {
-                                               NSLog(@"In completion handler");
-                                               
-                                               if (error) {
-                                                   // Do something
-                                               } else {
-                                                   // 3: Segue on success
-                                                   [self performSegueWithIdentifier:@"VC2toVC" sender:self];
-                                               }
-                                           }];
+            [[self client] listSessionsWithTags:@[@"jhjk"]
+                              completionHandler:^(NSArray *sessionList, CollabrifyError *error) {
+                                  NSUInteger result = [sessionList indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
+                                      CollabrifySession* sesh = obj;
+                                      if ([sesh.sessionName isEqualToString:groupName]) {
+                                          NSLog(@"FOUND!!!!!!!!");
+                                          *stop = YES;
+                                          return YES;
+                                      } else return NO;
+                                  }];
+                                  
+                                
+                                  if (result != NSNotFound) {
+                                      UIAlertView *sessionPresentError = [[UIAlertView alloc] initWithTitle:@"Group Name Already In Use" message:@"Please provide a different group name." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                                      [sessionPresentError show];
+                                  } else {
+                                          
+                                          [[self client] createSessionWithBaseFileWithName:groupName
+                                                                                      tags:[self tags]
+                                                                                  password:password
+                                                                          participantLimit:500
+                                                                               startPaused:YES
+                                                                         completionHandler:^(int64_t sessionID, CollabrifyError *error) {
+                                                                             NSLog(@"In completion handler");
+                                                                             
+                                                                             if (error) {
+                                                                                 // Do something
+                                                                             } else {
+                                                                                 // 3: Segue on success
+                                                                                 NSLog(@"SEGUE to new VC");
+                                                                                 [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                             }
+                                                                         }];
+
+                                      
+                                  }
+                                  
+                              }];
             NSLog(@"Does this happen");
             
         }
@@ -191,27 +220,49 @@
         } else {
             // 2: Create new session with given strings
             NSLog(@"Before create session");
+            [[self client] listSessionsWithTags:@[@"jhjk"]
+                              completionHandler:^(NSArray *sessionList, CollabrifyError *error) {
+                                  NSUInteger result = [sessionList indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
+                                      CollabrifySession* sesh = obj;
+                                      if ([sesh.sessionName isEqualToString:groupName]) {
+                                          NSLog(@"FOUND!!!!!!!!");
+                                          *stop = YES;
+                                          return YES;
+                                      } else return NO;
+                                  }];
+                                  
+                                  
+                                  if (result != NSNotFound) {
+                                      UIAlertView *sessionPresentError = [[UIAlertView alloc] initWithTitle:@"Group Name Already In Use" message:@"Please provide a different group name." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                                      [sessionPresentError show];
+                                      NSLog(@"Gets to the found block");
+                                  } else {
+                                      NSLog(@"Gets to the NOT found block");
+                                      [[self client] createSessionWithBaseFileWithName:groupName
+                                                                                  tags:[self tags]
+                                                                              password:nil
+                                                                      participantLimit:500
+                                                                           startPaused:YES
+                                                                     completionHandler:^(int64_t sessionID, CollabrifyError *error) {
+                                                                         NSLog(@"In completion handler");
+                                                                         
+                                                                         if (error) {
+                                                                             NSLog(@"ERROR for create session");
+                                                                         } else {
+                                                                             // 3: Segue on success
+                                                                             NSLog(@"SEGUE to new VC");
+                                                                             [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+                                                                         }
+                                                                     }];
+                                  }
+                              }];
+             
             
-            [[self client] createSessionWithBaseFileWithName:groupName
-                                                        tags:[self tags]
-                                                    password:nil
-                                            participantLimit:500
-                                                 startPaused:YES
-                                           completionHandler:^(int64_t sessionID, CollabrifyError *error) {
-                                               NSLog(@"In completion handler");
-                                               
-                                               if (error) {
-                                                   
-                                               } else {
-                                                   // 3: Segue on success
-                                                   [self performSegueWithIdentifier:@"VC2toVC" sender:self];
-                                               }
-                                           }];
             
             NSLog(@"Does this happen");
 
             // 3: Segue on success
-            [self performSegueWithIdentifier:@"VC2toVC" sender:self];
+            //[self performSegueWithIdentifier:@"VC2toVC" sender:self];
 
         }
     
@@ -262,8 +313,8 @@
                                     } else return NO;
                                 }];
                               
-                              NSLog(@"Found session with name %@.  Session index is %d", response, result);
                               if (result != NSNotFound) {
+                                  NSLog(@"Found session with name %@.  Session index is %d", response, result);
                                   [self setSession:sessionList[result]];
                                   if ([[self session] isPasswordProtected]) {
                                       UIAlertView *joinSessionWithPassword = [[UIAlertView alloc] initWithTitle:@"Enter Group Password"
@@ -279,7 +330,15 @@
                                   } else {
                                       [self joinSession:@""];
                                   }
+                              } else {
+                                  UIAlertView *sessionNotFound = [[UIAlertView alloc] initWithTitle:@"Group Not Found"
+                                                                                            message:@"This group has not been created."
+                                                                                           delegate:self
+                                                                                  cancelButtonTitle:@"Okay"
+                                                                                  otherButtonTitles:nil, nil];
+                                  [sessionNotFound show];
                               }
+                              
                               
                           }];
     } else if ([alertView.title isEqual:@"Enter Group Password"]) {
