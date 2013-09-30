@@ -4,7 +4,7 @@
 #ifndef PROTOBUF_textChangePB_2eproto__INCLUDED
 #define PROTOBUF_textChangePB_2eproto__INCLUDED
 
-#include <string>
+#include <string.h>
 
 #include <google/protobuf/stubs/common.h>
 

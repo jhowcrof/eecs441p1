@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "../Collabrify.framework/Headers/Collabrify.h"
+#import "textChangePB.pb.h"
+
 @class ViewController;
 
 @protocol ViewControllerDelegate <NSObject>

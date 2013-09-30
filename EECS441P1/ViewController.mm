@@ -11,6 +11,7 @@
 
 #import "ViewController.h"
 #import <Collabrify/Collabrify.h>
+#import <string.h>
 
 @interface ViewController ()
 
@@ -142,8 +143,12 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView{
-   // NSLog(@"Text changed");
-    
+    NSLog(@"Text changed");
+    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
+    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    std::string msg_string = msg->SerializeAsString();
+    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
+    [[self client] broadcast:msg_data eventType:@"Test"];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -254,6 +259,15 @@
                                                            otherButtonTitles:@"No", nil];
     
     [ownerLeaveSessionAlert show];
+}
+
+-(void)client:(CollabrifyClient *)client receivedEventWithOrderID:(int64_t)orderID submissionRegistrationID:(int32_t)submissionRegistrationID eventType:(NSString *)eventType data:(NSData *)data {
+    int length = [data length];
+    char data_char[length];
+    textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
+    [data getBytes:data_char length:length];
+    rcvd_msg->ParseFromArray(data_char, length);
+    NSLog(@"%s", rcvd_msg->contentmodified().c_str());
 }
 
 @end

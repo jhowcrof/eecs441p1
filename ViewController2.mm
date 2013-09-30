@@ -367,8 +367,6 @@
     }
 }
 
-
-
 -(NSData *)client:(CollabrifyClient *)client requestsBaseFileChunkForCurrentBaseFileSize:(NSInteger)baseFileSize{
     if (![self data]) {
         NSString *stringdata = @"TEST";
@@ -381,7 +379,7 @@
         return nil;
     }
     
-    return [NSData dataWithBytes:([[self data] bytes] + baseFileSize) length:length];
+    return [NSData dataWithBytes:((char *)[[self data] bytes] + baseFileSize) length:length];
 }
 
 // Transfer the client and other information to the next ViewController on segue.
