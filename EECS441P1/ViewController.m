@@ -18,6 +18,7 @@
 
 @implementation ViewController
 
+@synthesize delegate;
 
 - (void)viewDidLoad
 {
@@ -84,7 +85,7 @@
             }];
         } else {
             [[self client] leaveAndDeleteSession:NO completionHandler:^(BOOL success, CollabrifyError *error) {
-                 NSLog(@"no delete");
+                NSLog(@"no delete");
                 if (success) {
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 } else {
@@ -180,6 +181,7 @@
 
 - (IBAction)segueBack:(id)sender{
     NSLog(@"Return button pressed");
+    [self.delegate addItemViewController:self didFinishEnteringItem:[self client]];
     if ([[self client] participantID] == [[self client] currentSessionOwner].participantID) {
         NSLog(@"I am owner");
         [self ownerLeaveSession];

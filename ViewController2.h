@@ -10,7 +10,7 @@
 #import "Collabrify.framework/Headers/Collabrify.h"
 #import "ViewController.h"
 
-@interface ViewController2 : UIViewController <UIAlertViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate>
+@interface ViewController2 : UIViewController <UIAlertViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate, ViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
 @property (weak, nonatomic) IBOutlet UIButton *createGroupButton;

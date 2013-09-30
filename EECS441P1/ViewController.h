@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "../Collabrify.framework/Headers/Collabrify.h"
+@class ViewController;
+
+@protocol ViewControllerDelegate <NSObject>
+- (void)addItemViewController:(ViewController *)controller didFinishEnteringItem:(CollabrifyClient *)item;
+
+@end
+
+
 
 @interface ViewController : UIViewController <UITextViewDelegate, UIToolbarDelegate, UIScrollViewDelegate, UIAlertViewDelegate, CollabrifyClientDataSource, CollabrifyClientDelegate>
 
@@ -26,7 +34,7 @@
 @property (nonatomic) CollabrifySession *session;
 @property (nonatomic) NSArray *tags;
 
-
+@property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 
 - (IBAction)segueBack:(id)sender;
 
