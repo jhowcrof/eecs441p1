@@ -270,7 +270,10 @@
     [data getBytes:data_char length:length];
     rcvd_msg->ParseFromArray(data_char, length);
     NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
-    [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
+    });
+    
 }
 
 @end
