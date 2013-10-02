@@ -58,9 +58,6 @@
     // Disable undo and redo buttons
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
-    
-    
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -144,7 +141,13 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     NSLog(@"Text changed");
-    [self sendBroadcast];
+    // 1. Create a property on this ViewController to store the former size of the text in the textview
+    // 2. In Viewdidload, initialize the former size. (after setting up the text view)
+    // 3. Detect whether this change was an insert or delete using the former and current size
+    // 4. Implement a broadcast method for insert and delete (insert is kinda implemented.  You will need
+    //    to use the event type field to mark insert or delete.
+    // 5. In the receive handler, handle insert and delete.  Also update former size.
+    // 6. Everytime the text changes, update the former size (after you broadcast).
     
 }
 
@@ -267,9 +270,8 @@
     [data getBytes:data_char length:length];
     rcvd_msg->ParseFromArray(data_char, length);
     NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
-    NSLog(@"--%d", rcvd_msg->senderid());
 
-    if ([[self client] participantID] == rcvd_msg->senderid()) {
+    if (submissionRegistrationID) {
         return;
     }
     
@@ -287,20 +289,9 @@
     
 }
 
--(void)sendBroadcast{
+-(void)sendBroadcastInsert{
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
-    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
-    msg->set_senderid([[self client] participantID]);
-    std::string msg_string = msg->SerializeAsString();
-    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
-    [[self client] broadcast:msg_data eventType:@"Test"];
-}
-
--(void)sendBroadcast{
-    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
-    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
-    msg->set_senderid([[self client] participantID]);
-    std::string msg_string = msg->SerializeAsString();
+    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));    std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
     [[self client] broadcast:msg_data eventType:@"Test"];
 }

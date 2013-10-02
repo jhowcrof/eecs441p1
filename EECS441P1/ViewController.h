@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "../Collabrify.framework/Headers/Collabrify.h"
-#import "textChangePB.pb.h"
+#import "EVO.pb.h"
 
 @class ViewController;
 
