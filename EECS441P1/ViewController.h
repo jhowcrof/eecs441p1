@@ -35,6 +35,7 @@
 @property (nonatomic) CollabrifyClient *client;
 @property (nonatomic) CollabrifySession *session;
 @property (nonatomic) NSArray *tags;
+@property (nonatomic) NSTimer *updateTimer;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 

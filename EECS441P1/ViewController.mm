@@ -124,11 +124,14 @@
     }
     
     self.oldText = (NSMutableString *)self.myTextView.text;
+    self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(sendBroadcast:) userInfo:Nil repeats:YES];
 }
 
 // Called when the keyboard closes
 - (void)keyboardClosed:(NSNotification *) notification{
     NSLog(@"keyboard closed");
+    [self.updateTimer invalidate];
+    
     // This code came from the iOS Developer Guide
     UIEdgeInsets insets = self.myTextView.contentInset;
     insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
@@ -143,12 +146,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     NSLog(@"Text changed");
-    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
-    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
-    msg->set_senderid([[self client] participantID]);
-    std::string msg_string = msg->SerializeAsString();
-    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
-    [[self client] broadcast:msg_data eventType:@"Test"];
+    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -279,14 +277,23 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSRange selectedRange = [self.myTextView selectedRange];
-        [self.myTextView setEditable:NO];
+        //[self.myTextView setEditable:NO];
         
         [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
         
-        [self.myTextView setEditable:YES];
+        //[self.myTextView setEditable:YES];
         [self.myTextView setSelectedRange:selectedRange];
     });
     
+}
+
+-(void)sendBroadcast:(NSTimer *)timer {
+    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
+    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    msg->set_senderid([[self client] participantID]);
+    std::string msg_string = msg->SerializeAsString();
+    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
+    [[self client] broadcast:msg_data eventType:@"Test"];
 }
 
 @end
