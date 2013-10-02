@@ -145,6 +145,7 @@
     NSLog(@"Text changed");
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
     msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    msg->set_senderid([[self client] participantID]);
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
     [[self client] broadcast:msg_data eventType:@"Test"];
@@ -270,6 +271,12 @@
     [data getBytes:data_char length:length];
     rcvd_msg->ParseFromArray(data_char, length);
     NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
+    NSLog(@"--%d", rcvd_msg->senderid());
+
+    if ([[self client] participantID] == rcvd_msg->senderid()) {
+        return;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
     });
