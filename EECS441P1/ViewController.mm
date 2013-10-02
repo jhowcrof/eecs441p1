@@ -124,13 +124,11 @@
     }
     
     self.oldText = (NSMutableString *)self.myTextView.text;
-    self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(sendBroadcast:) userInfo:Nil repeats:YES];
 }
 
 // Called when the keyboard closes
 - (void)keyboardClosed:(NSNotification *) notification{
     NSLog(@"keyboard closed");
-    [self.updateTimer invalidate];
     
     // This code came from the iOS Developer Guide
     UIEdgeInsets insets = self.myTextView.contentInset;
@@ -146,6 +144,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     NSLog(@"Text changed");
+    [self sendBroadcast];
     
 }
 
@@ -160,7 +159,7 @@
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView{
-    //NSLog(@"DidEndEditing");
+    // NSLog(@"DidEndEditing");
     
     [self.caretVisibilityTimer invalidate];
     self.caretVisibilityTimer = nil;
@@ -196,7 +195,6 @@
             }
         }];
     }
-    
     
 }
 
@@ -289,7 +287,7 @@
     
 }
 
--(void)sendBroadcast:(NSTimer *)timer {
+-(void)sendBroadcast{
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
     msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
     msg->set_senderid([[self client] participantID]);
