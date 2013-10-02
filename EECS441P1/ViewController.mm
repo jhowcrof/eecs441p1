@@ -278,9 +278,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSRange selectedRange = [self.myTextView selectedRange];
         //[self.myTextView setEditable:NO];
+        [[self myTextView] setScrollEnabled:NO];
         
         [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
         
+        [[self myTextView] setScrollEnabled:YES];
         //[self.myTextView setEditable:YES];
         [self.myTextView setSelectedRange:selectedRange];
     });
