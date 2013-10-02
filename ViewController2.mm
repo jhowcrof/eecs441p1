@@ -56,7 +56,9 @@
 }
 
 - (void)joinSession:(NSString *)password {
-    [[self client] joinSessionWithID:[self session].sessionID password:password completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
+    [[self client] joinSessionWithID:[self session].sessionID
+                            password:password
+                   completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
         if([error type] == CollabrifyServerSideErrorInvalidSessionPassword){
             UIAlertView *passwordInvalidError = [[UIAlertView alloc] initWithTitle:@"Invalid Password" message:@"The password you have entered invalid" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
             [passwordInvalidError show];
@@ -192,7 +194,7 @@
                                                                                       tags:[self tags]
                                                                                   password:password
                                                                           participantLimit:500
-                                                                               startPaused:YES
+                                                                               startPaused:NO
                                                                          completionHandler:^(int64_t sessionID, CollabrifyError *error) {
                                                                              NSLog(@"In completion handler");
                                                                              
@@ -255,7 +257,7 @@
                                                                                   tags:[self tags]
                                                                               password:nil
                                                                       participantLimit:500
-                                                                           startPaused:YES
+                                                                           startPaused:NO
                                                                      completionHandler:^(int64_t sessionID, CollabrifyError *error) {
                                                                          NSLog(@"In completion handler");
                                                                          
