@@ -296,4 +296,13 @@
     [[self client] broadcast:msg_data eventType:@"Test"];
 }
 
+-(void)sendBroadcast{
+    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
+    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    msg->set_senderid([[self client] participantID]);
+    std::string msg_string = msg->SerializeAsString();
+    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
+    [[self client] broadcast:msg_data eventType:@"Test"];
+}
+
 @end
