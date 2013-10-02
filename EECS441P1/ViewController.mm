@@ -25,6 +25,8 @@
 {
     [super viewDidLoad];
     
+    [[self client] setDelegate:self];
+    
     // Receive Keyboard opened and closed notifications.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardOpened:)
