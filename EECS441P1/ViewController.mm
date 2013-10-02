@@ -52,10 +52,6 @@
     self.myTextView.inputAccessoryView = keyboardToolbar;
     keyboardToolbar.items = [NSArray arrayWithObject:keyboardDoneButton];
     
-    // Configure the scrollView
-    //[self.scrollView setScrollEnabled:YES];
-    //[self.scrollView setContentSize:CGSizeMake(320, 500)];
-    
     // Disable undo and redo buttons
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
@@ -202,6 +198,8 @@
     
 }
 
+
+// This is called when the Undo button is pressed
 - (IBAction)undo:(id)sender{
     NSUndoManager *undoManager = self.myTextView.undoManager;
     if ([undoManager canUndo]) [undoManager undo];
@@ -209,6 +207,7 @@
     self.redoButton.enabled = YES;
 }
 
+// This is called when the Redo button is pressed
 - (IBAction)redo:(id)sender{
     NSUndoManager *undoManager = self.myTextView.undoManager;
     
@@ -224,8 +223,8 @@
 }
 
 - (void)scrollCaretToVisible{
-    //This is where the cursor is at.
-    NSLog(@"moving to cursor");
+    // This is where the cursor is at.
+    // NSLog(@"moving to cursor");
     CGRect caretRect = [self.myTextView caretRectForPosition:self.myTextView.selectedTextRange.end];
     
     if(CGRectEqualToRect(caretRect, self.oldRect))
@@ -233,12 +232,12 @@
     
     self.oldRect = caretRect;
     
-    //This is the visible rect of the textview.
+    // This is the visible rect of the textview.
     CGRect visibleRect = self.myTextView.bounds;
     visibleRect.size.height -= (self.myTextView.contentInset.top + self.myTextView.contentInset.bottom);
     visibleRect.origin.y = self.myTextView.contentOffset.y;
     
-    //We will scroll only if the caret falls outside of the visible rect.
+    // We will scroll only if the caret falls outside of the visible rect.
     if(!CGRectContainsRect(visibleRect, caretRect))
     {
         CGPoint newOffset = self.myTextView.contentOffset;
@@ -267,7 +266,7 @@
     textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
     [data getBytes:data_char length:length];
     rcvd_msg->ParseFromArray(data_char, length);
-    NSLog(@"%s", rcvd_msg->contentmodified().c_str());
+    NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
 }
 
 @end
