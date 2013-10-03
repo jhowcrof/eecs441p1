@@ -293,6 +293,8 @@
 
     if (submissionRegistrationID) {
         NSLog(@"This is your own submission, no need to update.");
+        NSLog(@"Setting cursorLocation to: %lu", (unsigned long)self.myTextView.selectedRange.location);
+        self.textSize = self.myTextView.selectedRange.location;
         return;
     }
     
@@ -363,6 +365,10 @@
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
     
     msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    
+    // 3: PROTO: cursorLocation
+    msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
+    
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
     [[self client] broadcast:msg_data eventType:@"UndoRedo"];
