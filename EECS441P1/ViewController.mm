@@ -58,6 +58,9 @@
     // Disable undo and redo buttons
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
+    
+    //Initialize textSize
+    [self setTextSize:0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,7 +146,24 @@
     NSLog(@"Text changed");
     // 1. Create a property on this ViewController to store the former size of the text in the textview
     // 2. In Viewdidload, initialize the former size. (after setting up the text view)
+    
     // 3. Detect whether this change was an insert or delete using the former and current size
+    
+    
+    if((abs(self.textSize - [[[self myTextView] text] length])) > 1){
+        NSLog(@"Broadcast Undo/Redo");
+        [self sendBroadcastUndoRedo];
+    }
+    else if(self.textSize < [[[self myTextView] text] length]){
+        // Adding text
+        NSLog(@"Broadcast Insert");
+        [self sendBroadcastInsert];
+    } else {
+        // Deleting Text
+        NSLog(@"Broadcast Delete");
+        [self sendBroadcastDelete];
+    }
+    
     // 4. Implement a broadcast method for insert and delete (insert is kinda implemented.  You will need
     //    to use the event type field to mark insert or delete.
     // 5. In the receive handler, handle insert and delete.  Also update former size.
@@ -272,6 +292,7 @@
     NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
 
     if (submissionRegistrationID) {
+        NSLog(@"This is your own submission, no need to update.");
         return;
     }
     
@@ -280,7 +301,22 @@
         //[self.myTextView setEditable:NO];
         [[self myTextView] setScrollEnabled:NO];
         
-        [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
+        NSLog(@"Event Type is: %@", eventType);
+        NSLog(@"Old cursor location: %i", self.textSize);
+        
+        if([eventType isEqual:@"UndoRedo"]){
+            NSLog(@"Setting UndoRedo Response: %@", [NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]);
+            [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
+        } else if([eventType isEqual:@"Insert"]){
+            NSLog(@"Setting Insert Response: %@", [self.myTextView.text stringByAppendingString:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]]);
+            [self.myTextView setText:[self.myTextView.text stringByAppendingString:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]]];
+        } else {
+            NSLog(@"Setting Delete Response: %@", [self.myTextView.text substringToIndex:self.textSize-1]);
+            [self.myTextView setText:[self.myTextView.text substringToIndex:self.textSize-1]];
+        }
+        
+        NSLog(@"Setting cursorLocation to: %lli", rcvd_msg->cursorlocation());
+        self.textSize = rcvd_msg->cursorlocation();
         
         [[self myTextView] setScrollEnabled:YES];
         //[self.myTextView setEditable:YES];
@@ -290,10 +326,46 @@
 }
 
 -(void)sendBroadcastInsert{
+    // 1: Initialize PROTO
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
-    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));    std::string msg_string = msg->SerializeAsString();
+    
+    // 2: PROTO: contentModified
+    unichar char_to_send = [self.myTextView.text characterAtIndex:(self.myTextView.selectedRange.location - 1)];
+    msg->set_contentmodified(*new std::string([[NSString stringWithCharacters:&char_to_send length:1] UTF8String]));
+    
+    // 3: PROTO: cursorLocation
+    msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
+    
+    // 4: Send PROTO
+    std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
-    [[self client] broadcast:msg_data eventType:@"Test"];
+    [[self client] broadcast:msg_data eventType:@"Insert"];
+}
+
+-(void) sendBroadcastDelete{
+    // 1: Initialize PROTO
+    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
+    
+    // 2: PROTO: contentModified
+    // NOTHING
+    
+    // 3: PROTO: cursorLocation
+    msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
+    
+    // 4: Send PROTO
+    std::string msg_string = msg->SerializeAsString();
+    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
+    [[self client] broadcast:msg_data eventType:@"Delete"];
+}
+
+-(void) sendBroadcastUndoRedo{
+    // 1: Initialize PROTO
+    textChange::textChangeMessage *msg = new textChange::textChangeMessage();
+    
+    msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
+    std::string msg_string = msg->SerializeAsString();
+    NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
+    [[self client] broadcast:msg_data eventType:@"UndoRedo"];
 }
 
 @end
