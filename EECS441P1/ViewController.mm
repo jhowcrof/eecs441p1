@@ -283,6 +283,12 @@
     [ownerLeaveSessionAlert show];
 }
 
+//-------------------------------------------------//
+//                                                 //
+//             Receiving Broadcasts                //
+//                                                 //
+//-------------------------------------------------//
+
 -(void)client:(CollabrifyClient *)client receivedEventWithOrderID:(int64_t)orderID submissionRegistrationID:(int32_t)submissionRegistrationID eventType:(NSString *)eventType data:(NSData *)data {
     int length = [data length];
     char data_char[length];
@@ -291,7 +297,7 @@
     rcvd_msg->ParseFromArray(data_char, length);
     NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
 
-    if (submissionRegistrationID) {
+    if (submissionRegistrationID != -1) {
         NSLog(@"This is your own submission, no need to update.");
         NSLog(@"Setting cursorLocation to: %lu", (unsigned long)self.myTextView.selectedRange.location);
         self.textSize = self.myTextView.selectedRange.location;
@@ -327,15 +333,21 @@
     
 }
 
+//-------------------------------------------------//
+//                                                 //
+//               Sending Broadcasts                //
+//                                                 //
+//-------------------------------------------------//
+
 -(void)sendBroadcastInsert{
     // 1: Initialize PROTO
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
     
-    // 2: PROTO: contentModified
+    // 2: PROTO: contentModified - send the character that was inserted
     unichar char_to_send = [self.myTextView.text characterAtIndex:(self.myTextView.selectedRange.location - 1)];
     msg->set_contentmodified(*new std::string([[NSString stringWithCharacters:&char_to_send length:1] UTF8String]));
     
-    // 3: PROTO: cursorLocation
+    // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
     
     // 4: Send PROTO
@@ -351,7 +363,7 @@
     // 2: PROTO: contentModified
     // NOTHING
     
-    // 3: PROTO: cursorLocation
+    // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
     
     // 4: Send PROTO
@@ -364,14 +376,42 @@
     // 1: Initialize PROTO
     textChange::textChangeMessage *msg = new textChange::textChangeMessage();
     
+    // 2: PROTO: contentModified - send all of the text
     msg->set_contentmodified(*new std::string([self.myTextView.text UTF8String]));
     
-    // 3: PROTO: cursorLocation
+    // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
     
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
     [[self client] broadcast:msg_data eventType:@"UndoRedo"];
 }
+
+//----------------NEW IDEA-------------------------//
+/*
+ 
+ 1: Local changes reflected immediately
+ 2: Whenever the self makes a change, make a duplicate string that equals the self string
+ 3: Use a counter for the number of broadcasts and receives
+ 4: Whenever there is a new string present (some bool true) reflect the change in the new string
+ 5: Only update the main string when all self broadcasts are received
+ 6: Treat the receiving of other member broadcasts as normal, just immediately alter original string
+ 
+ 
+ 
+*/
+//-------------------------------------------------//
+//                                                 //
+//               UNIVERSAL MODS                    //
+//                                                 //
+//-------------------------------------------------//
+
+/*-(void) insertMOD:(NSString*) stringToMod{
+    
+}
+
+-(void) deleteMOD:(NSString*) stringToMod{
+    
+}*/
 
 @end
