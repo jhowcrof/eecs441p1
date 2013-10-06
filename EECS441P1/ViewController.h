@@ -36,6 +36,8 @@
 @property (nonatomic) CollabrifySession *session;
 @property (nonatomic) NSArray *tags;
 @property (nonatomic) NSInteger textSize;
+@property (nonatomic) NSString* sideString;
+@property (nonatomic) NSInteger BRCounter;
 //@property (nonatomic) NSRange *range;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;

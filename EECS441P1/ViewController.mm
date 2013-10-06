@@ -61,6 +61,10 @@
     
     //Initialize textSize
     [self setTextSize:0];
+    
+    /*      EVO ALGO        */
+    self.sideString = [[NSString alloc] initWithString:self.myTextView.text];
+    self.BRCounter = 0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,6 +147,8 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView{
+    /* ORIG
+    
     NSLog(@"Text changed");
     // 1. Create a property on this ViewController to store the former size of the text in the textview
     // 2. In Viewdidload, initialize the former size. (after setting up the text view)
@@ -168,6 +174,32 @@
     //    to use the event type field to mark insert or delete.
     // 5. In the receive handler, handle insert and delete.  Also update former size.
     // 6. Everytime the text changes, update the former size (after you broadcast).
+    */
+    
+    if(self.textSize < [[[self myTextView] text] length]){
+        // Adding text
+        // 1: Reflect in original text
+        // DONE
+        
+        // 2: Modify the counter
+        self.BRCounter++;
+        
+        // 3: Send a broadcast
+        [self sendBroadcastInsert];
+        
+    } else {
+        // Deleting Text
+        // 1: Reflect in original text
+        // DONE
+        
+        // 2: Modify the counter
+        self.BRCounter++;
+        
+        // 3: Send a broadcast
+        [self sendBroadcastDelete];
+        
+    }
+    
     
 }
 
@@ -290,6 +322,9 @@
 //-------------------------------------------------//
 
 -(void)client:(CollabrifyClient *)client receivedEventWithOrderID:(int64_t)orderID submissionRegistrationID:(int32_t)submissionRegistrationID eventType:(NSString *)eventType data:(NSData *)data {
+    
+    /*ORIG
+     
     int length = [data length];
     char data_char[length];
     textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
@@ -330,7 +365,57 @@
         //[self.myTextView setEditable:YES];
         [self.myTextView setSelectedRange:selectedRange];
     });
+    */
     
+    // 1: Parse the protocol buffer
+    int length = [data length];
+    char data_char[length];
+    textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
+    [data getBytes:data_char length:length];
+    rcvd_msg->ParseFromArray(data_char, length);
+    
+    // 2: If this is your own submission
+    //      - Update the counter
+    //      - Update Side string
+    //      - If the all broadcasts received, set myTextView text to sideString
+    //      - Set the cursor to the correct location
+    if (submissionRegistrationID != -1) {
+        self.BRCounter--;
+        
+        if([eventType isEqual:@"Insert"]){
+            [self insertMOD:self.sideString];
+        }
+        else{
+            [self deleteMOD:self.sideString];
+        }
+        
+        if (self.BRCounter == 0) {
+            [self.myTextView setText:self.sideString];
+        }
+        
+        
+        // SET THE CURSOR LOCATION IMPLEMENTATION
+    } else {
+        if (self.BRCounter == 0) {
+            // REFLECT CHANGES IN ORIGINAL AND SIDE
+            if ([eventType isEqual:@"Insert"]) {
+                [self insertMOD:self.myTextView.text];
+                [self insertMOD:self.sideString];
+            } else {
+                [self deleteMOD:self.myTextView.text];
+                [self deleteMOD:self.sideString];
+            }
+        } else {
+            // REFLECT CHANGES ONLY IN SIDE
+            if ([eventType isEqual:@"Insert"]) {
+                [self insertMOD:self.myTextView.text];
+                [self insertMOD:self.sideString];
+            } else {
+                [self deleteMOD:self.myTextView.text];
+                [self deleteMOD:self.sideString];
+            }
+        }
+    }
 }
 
 //-------------------------------------------------//
@@ -387,15 +472,15 @@
     [[self client] broadcast:msg_data eventType:@"UndoRedo"];
 }
 
-//----------------NEW IDEA-------------------------//
+//----------------EVO ALGO-------------------------//
 /*
  
  1: Local changes reflected immediately
- 2: Whenever the self makes a change, make a duplicate string that equals the self string
- 3: Use a counter for the number of broadcasts and receives
- 4: Whenever there is a new string present (some bool true) reflect the change in the new string
+ 2: Whenever the self makes a change, update counter
+ 3: Use a counter for the number of self broadcasts and self receives
+ 4: Whenever the counter says more self broadcasts than self receives reflect the change in sideString
  5: Only update the main string when all self broadcasts are received
- 6: Treat the receiving of other member broadcasts as normal, just immediately alter original string
+ 6: Treat the receiving of other member broadcasts as normal when counter is 0, just immediately alter original string and the side string
  
  
  
@@ -406,12 +491,12 @@
 //                                                 //
 //-------------------------------------------------//
 
-/*-(void) insertMOD:(NSString*) stringToMod{
+-(void) insertMOD:(NSString*) stringToMod{
     
 }
 
 -(void) deleteMOD:(NSString*) stringToMod{
     
-}*/
+}
 
 @end
