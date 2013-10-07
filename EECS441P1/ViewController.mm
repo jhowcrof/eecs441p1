@@ -359,15 +359,34 @@
                 [self deleteSide:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
             }
             
+            
+            if([eventType isEqual:@"Insert"]){
+                if(rcvd_msg->cursorlocation() - rcvd_msg->numchars() <= self.selectedRange.location){
+                    NSRange newRange = self.selectedRange;
+                    newRange.location += rcvd_msg->numchars();
+                    [self setSelectedRange:newRange];
+                }
+            } else {
+                if (rcvd_msg->cursorlocation() < self.selectedRange.location && rcvd_msg->cursorlocation()+rcvd_msg->numchars() > self.selectedRange.location) {
+                    NSRange newRange = [self selectedRange];
+                    newRange.location -= [self selectedRange].location - rcvd_msg->cursorlocation();
+                    [self setSelectedRange:newRange];
+                } else if (rcvd_msg->cursorlocation() < self.selectedRange.location){
+                    NSRange newRange = [self selectedRange];
+                    newRange.location -= [self selectedRange].location;
+                    [self setSelectedRange:newRange];
+                }
+            }
+
             if (self.BRCounter == 0) {
                 NSLog(@"BRcounter is zero");
                 [self.myTextView setText:self.sideString];
                 
                 //self.textSize = [[[self myTextView] text] length];
 
-                
-                
+                NSLog(@"RVCD cursorlocation = %lli, numchars = %lli, selectedRange = %i", rcvd_msg->cursorlocation(), rcvd_msg->numchars(), self.selectedRange.location);
                 [self.myTextView setSelectedRange:self.selectedRange];
+                NSLog(@"Setting cursor at %i", self.selectedRange.location);
                 /*NSRange selectedRange = [self.myTextView selectedRange];
                 selectedRange.location = self.sideCursorLoc;
                 NSLog(@"What is the cursor location? side:%d main:%d", selectedRange.location, [[self myTextView] selectedRange].location);
@@ -557,7 +576,10 @@
     }
     self.textSize = [[[self myTextView] text] length];
     
+    
+    NSLog(@"Location - numChar = %i, and self.selectedRange.location = %i", location - numChars, self.selectedRange.location);
     if(location - numChars <= self.selectedRange.location){
+        NSLog(@"Setting self.selectedRange location with location - numC");
         NSRange newRange = self.selectedRange;
         newRange.location += numChars;
         [self setSelectedRange:newRange];

@@ -40,6 +40,7 @@
 @property (nonatomic) NSInteger sideCursorLoc;
 @property (nonatomic) NSInteger BRCounter;
 @property (nonatomic) NSRange selectedRange;
+@property (nonatomic) BOOL sideNotMod;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 
