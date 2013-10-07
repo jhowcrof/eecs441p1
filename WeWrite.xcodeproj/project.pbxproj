@@ -481,6 +481,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Jacob Howcroft";
+				TargetAttributes = {
+					163DD41E17DA3E1700AA4C3A = {
+						DevelopmentTeam = 36ZL6GPQPE;
+					};
+				};
 			};
 			buildConfigurationList = 163DD41A17DA3E1700AA4C3A /* Build configuration list for PBXProject "WeWrite" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -695,6 +700,8 @@
 		163DD45817DA3E1700AA4C3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -703,6 +710,7 @@
 				GCC_PREFIX_HEADER = "EECS441P1/WeWrite-Prefix.pch";
 				INFOPLIST_FILE = "EECS441P1/WeWrite-Info.plist";
 				PRODUCT_NAME = WeWrite;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -710,6 +718,8 @@
 		163DD45917DA3E1700AA4C3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -718,6 +728,7 @@
 				GCC_PREFIX_HEADER = "EECS441P1/WeWrite-Prefix.pch";
 				INFOPLIST_FILE = "EECS441P1/WeWrite-Info.plist";
 				PRODUCT_NAME = WeWrite;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

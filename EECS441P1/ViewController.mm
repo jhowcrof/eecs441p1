@@ -64,10 +64,12 @@
     
     /*      EVO ALGO        */
     self.sideString = [[NSString alloc] initWithString:self.myTextView.text];
-    self.BRCounter = 0;
+    @synchronized(self){
+        self.BRCounter = 0;
+    }
     [[self client] resumeEvents];
     
-    self.sideCursorLoc = 0;
+    [self setSelectedRange:self.myTextView.selectedRange];
     
     NSLog(@"xOME %i", self.myTextView.selectedRange.location);
 }
@@ -192,7 +194,9 @@
         // DONE
         
         // 2: Modify the counter
-        self.BRCounter++;
+        @synchronized(self) {
+            self.BRCounter++;
+        }
         
         // 3: Send a broadcast
         [self sendBroadcastInsert];
@@ -203,7 +207,9 @@
         // DONE
         
         // 2: Modify the counter
-        self.BRCounter++;
+        @synchronized(self) {
+            self.BRCounter++;
+        }
         
         // 3: Send a broadcast
         [self sendBroadcastDelete];
@@ -349,7 +355,9 @@
         //      - Set the cursor to the correct location
         if (submissionRegistrationID != -1) {
             NSLog(@"Self Submission Received");
-            self.BRCounter--;
+            @synchronized(self) {
+                self.BRCounter--;
+            }
             
             if([eventType isEqual:@"Insert"]){
                 NSLog(@"Event type is insert");
@@ -359,9 +367,13 @@
                 [self deleteSide:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
             }
             
-            
-            if([eventType isEqual:@"Insert"]){
-                if(rcvd_msg->cursorlocation() - rcvd_msg->numchars() <= self.selectedRange.location){
+            NSRange newRange = [self myTextView].selectedRange;
+            NSLog(@"Location of text view cursor: %i", newRange.location);
+            newRange.location = rcvd_msg->cursorlocation();
+            [self setSelectedRange:newRange];
+            NSLog(@"Setting side cursor at %i", self.selectedRange.location);
+            /*if([eventType isEqual:@"Insert"]){
+                if(rcvd_msg->cursorlocation() - rcvd_msg->numchars() < self.selectedRange.location){
                     NSRange newRange = self.selectedRange;
                     newRange.location += rcvd_msg->numchars();
                     [self setSelectedRange:newRange];
@@ -376,7 +388,10 @@
                     newRange.location -= [self selectedRange].location;
                     [self setSelectedRange:newRange];
                 }
-            }
+            }*/
+            
+            
+            
 
             if (self.BRCounter == 0) {
                 NSLog(@"BRcounter is zero");
@@ -391,9 +406,8 @@
                 selectedRange.location = self.sideCursorLoc;
                 NSLog(@"What is the cursor location? side:%d main:%d", selectedRange.location, [[self myTextView] selectedRange].location);
                 [self.myTextView setSelectedRange:selectedRange];*/
-                
-                
             }
+            
         } else {
             NSLog(@"Ouside submission received");
             // SET THE CURSOR LOCATION IMPLEMENTATION
@@ -558,6 +572,7 @@
 
 -(void) insertMain:(NSString *)text atLocation:(int)location amount:(int)numChars{
     self.selectedRange = [self.myTextView selectedRange];
+    self.myTextView.scrollEnabled = NO;
     NSLog(@"insertMain - Location: %d", location);
     if (location - numChars == 0) {
         // Text is at start
@@ -575,10 +590,10 @@
             setText:[NSString stringWithFormat:@"%@%@%@", [self.myTextView.text substringToIndex:location-numChars], text, [self.myTextView.text substringFromIndex:location-numChars]]];
     }
     self.textSize = [[[self myTextView] text] length];
-    
+    [self.myTextView setSelectedRange:self.selectedRange];
     
     NSLog(@"Location - numChar = %i, and self.selectedRange.location = %i", location - numChars, self.selectedRange.location);
-    if(location - numChars <= self.selectedRange.location){
+    if(location - numChars < self.selectedRange.location){
         NSLog(@"Setting self.selectedRange location with location - numC");
         NSRange newRange = self.selectedRange;
         newRange.location += numChars;
@@ -586,11 +601,12 @@
     }
     
     NSLog(@"insertMain FINISH");
-
+    self.myTextView.scrollEnabled = YES;
 }
 
 -(void) deleteMain:(int)location amount:(int)numChars{
     self.selectedRange = [self.myTextView selectedRange];
+    self.myTextView.scrollEnabled = NO;
     NSLog(@"deleteMain - Location: %d", location);
     if (location == 0) {
         // Delete is at start
@@ -605,6 +621,7 @@
     }
     
     self.textSize = [[[self myTextView] text] length];
+    [self.myTextView setSelectedRange:self.selectedRange];
     
     if (location < self.selectedRange.location && location+numChars > self.selectedRange.location) {
         NSRange newRange = [self selectedRange];
@@ -617,6 +634,7 @@
     }
     
     NSLog(@"deleteMain FINISH");
+    self.myTextView.scrollEnabled = YES;
 
 }
 
