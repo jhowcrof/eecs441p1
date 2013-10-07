@@ -10,4 +10,5 @@ message textChangeMessage{
 
 	optional int64 cursorLocation = 1;
 	optional string contentModified = 2;
+    optional int64 numChars = 3;
 }

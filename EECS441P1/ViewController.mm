@@ -66,6 +66,10 @@
     self.sideString = [[NSString alloc] initWithString:self.myTextView.text];
     self.BRCounter = 0;
     [[self client] resumeEvents];
+    
+    self.sideCursorLoc = 0;
+    
+    NSLog(@"xOME %i", self.myTextView.selectedRange.location);
 }
 
 - (void)didReceiveMemoryWarning
@@ -344,34 +348,55 @@
         //      - If the all broadcasts received, set myTextView text to sideString
         //      - Set the cursor to the correct location
         if (submissionRegistrationID != -1) {
+            NSLog(@"Self Submission Received");
             self.BRCounter--;
             
             if([eventType isEqual:@"Insert"]){
-                [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+                NSLog(@"Event type is insert");
+                [self insertSide:text atLocation:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
             } else {
-                [self deleteSide:rcvd_msg->cursorlocation()];
+                NSLog(@"Event type is delete");
+                [self deleteSide:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
             }
             
             if (self.BRCounter == 0) {
+                NSLog(@"BRcounter is zero");
                 [self.myTextView setText:self.sideString];
+                
+                //self.textSize = [[[self myTextView] text] length];
+
+                
+                NSRange selectedRange = [self.myTextView selectedRange];
+                selectedRange.location = self.sideCursorLoc;
+                [self.myTextView setSelectedRange:selectedRange];
+                
+                
             }
         } else {
+            NSLog(@"Ouside submission received");
             // SET THE CURSOR LOCATION IMPLEMENTATION
             if (self.BRCounter == 0) {
+                NSLog(@"BR counter is zero");
                 // REFLECT CHANGES IN ORIGINAL AND SIDE
                 if ([eventType isEqual:@"Insert"]) {
-                    [self insertMain:text atLocation:rcvd_msg->cursorlocation()];
-                    [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+                    NSLog(@"Event Type is insert");
+                    [self insertMain:text atLocation:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
+                    [self insertSide:text atLocation:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
                 } else {
-                    [self deleteMain:rcvd_msg->cursorlocation()];
-                    [self deleteSide:rcvd_msg->cursorlocation()];
+                    NSLog(@"Event Type is delete");
+                    [self deleteMain:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
+                    [self deleteSide:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
                 }
+            
             } else {
+                NSLog(@"BR counter is NOT zero");
                 // REFLECT CHANGES ONLY IN SIDE
                 if ([eventType isEqual:@"Insert"]) {
-                    [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+                    NSLog(@"Event Type is insert");
+                    [self insertSide:text atLocation:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
                 } else {
-                    [self deleteSide:rcvd_msg->cursorlocation()];
+                    NSLog(@"Event Type is delete");
+                    [self deleteSide:rcvd_msg->cursorlocation() amount:rcvd_msg->numchars()];
                 }
             }
         }
@@ -395,6 +420,10 @@
     // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
     
+    // 3.5 PROTO: numChars
+    msg->set_numchars(*new std::int64_t(abs(self.textSize - [[[self myTextView] text] length])));
+    
+    
     // 4: Send PROTO
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
@@ -411,6 +440,10 @@
     // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
     
+    // 3.5 PROTO: numChars
+    msg->set_numchars(*new std::int64_t(abs(self.textSize - [[[self myTextView] text] length])));
+    
+    
     // 4: Send PROTO
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
@@ -426,6 +459,11 @@
     
     // 3: PROTO: cursorLocation - send the cursor location after insertion
     msg->set_cursorlocation(*new std::int64_t(self.myTextView.selectedRange.location));
+    
+    // 3.5 PROTO: numChars
+    msg->set_numchars(*new std::int64_t(abs(self.textSize - [[[self myTextView] text] length])));
+    
+   
     
     std::string msg_string = msg->SerializeAsString();
     NSData *msg_data = [NSData dataWithBytes:msg_string.c_str() length:msg_string.length()];
@@ -451,8 +489,8 @@
 //                                                 //
 //-------------------------------------------------//
 
--(void) insertSide:(NSString *)text atLocation:(int)location{
-    NSLog(@"Location: %d", location);
+-(void) insertSide:(NSString *)text atLocation:(int)location amount:(int)numChars{
+    NSLog(@"insertSide - Location: %d", location);
     if (location - 1 == 0) {
         // Text is at start
         self.sideString = [NSString stringWithFormat:@"%@%@", text, self.sideString];
@@ -463,61 +501,97 @@
         // Text is in middle
         self.sideString = [NSString stringWithFormat:@"%@%@%@", [self.sideString substringToIndex:location-1], text, [self.sideString substringFromIndex:location-1]];
     }
+    
+    if(location <= self.sideCursorLoc){
+        self.sideCursorLoc += numChars;
+    }
+    
+    NSLog(@"inserSide FINISH");
 }
 
--(void) deleteSide:(int)location{
-    NSLog(@"Location: %d", location);
+-(void) deleteSide:(int)location amount:(int)numChars{
+    NSLog(@"Deleteside - Location: %d", location);
     if (location == 0) {
         // Delete is at start
-        self.sideString = [self.sideString substringFromIndex:1];
+        self.sideString = [self.sideString substringFromIndex:numChars];
     } else if (location == self.sideString.length - 2) {
         // Delete is at end
         self.sideString = [self.sideString substringToIndex:location];
     } else {
         // Text is in middle
         self.sideString =
-            [NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + 1]];
+            [NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + numChars]];
     }
+    
+    
+    if (location < self.sideCursorLoc && location+numChars > self.sideCursorLoc) {
+        self.sideCursorLoc -= self.sideCursorLoc - location;
+    } else if (location < self.sideCursorLoc){
+    self.sideCursorLoc -= numChars;
+    }
+    
+    NSLog(@"deleteSide FINISH");
+
 }
 
--(void) insertMain:(NSString *)text atLocation:(int)location{
+-(void) insertMain:(NSString *)text atLocation:(int)location amount:(int)numChars{
     NSRange selectedRange = [self.myTextView selectedRange];
-    NSLog(@"Location: %d", location);
+    NSLog(@"insertMain - Location: %d", location);
     if (location - 1 == 0) {
+
         // Text is at start
         [[self myTextView] setText:[NSString stringWithFormat:@"%@%@", text, [[self myTextView] text]]];
     } else if (location - 1 == [[[self myTextView] text] length]) {
+        NSLog(@"GOT HERE 1");
+
         // Text is at end
         [[self myTextView] setText:[NSString stringWithFormat:@"%@%@", [[self myTextView] text], text]];
     } else {
+        NSLog(@"GOT HERE 2");
+
         // Text is in middle
         [[self myTextView]
             setText:[NSString stringWithFormat:@"%@%@%@", [self.myTextView.text substringToIndex:location-1], text, [self.myTextView.text substringFromIndex:location-1]]];
     }
-    
     self.textSize = [[[self myTextView] text] length];
+    
+    if(location <= selectedRange.location){
+        selectedRange.location += numChars;
+    }
+
     [self.myTextView setSelectedRange:selectedRange];
+    
+    NSLog(@"inserMain FINISH");
+
 }
 
--(void) deleteMain:(int)location{
+-(void) deleteMain:(int)location amount:(int)numChars{
     NSRange selectedRange = [self.myTextView selectedRange];
-    NSLog(@"Location: %d", location);
+    NSLog(@"deleteMain - Location: %d", location);
     if (location == 0) {
         // Delete is at start
-        [[self myTextView] setText:[self.sideString substringFromIndex:1]];
+        [[self myTextView] setText:[self.sideString substringFromIndex:numChars]];
     } else if (location == self.sideString.length - 2) {
         // Delete is at end
         [[self myTextView] setText:[self.sideString substringToIndex:location]];
     } else {
         // Text is in middle
         [[self myTextView]
-         setText:[NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + 1]]];
+         setText:[NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + numChars]]];
     }
     
     self.textSize = [[[self myTextView] text] length];
+    
+    if (location < selectedRange.location && location+numChars > selectedRange.location) {
+        selectedRange.location -= selectedRange.location - location;
+    } else if (location < selectedRange.location){
+        selectedRange.location -= numChars;
+    }
+    
     [self.myTextView setSelectedRange:selectedRange];
     
-    
+    NSLog(@"deleteMain FINISH");
+
 }
 
 @end

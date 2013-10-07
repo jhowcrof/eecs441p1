@@ -37,7 +37,9 @@
 @property (nonatomic) NSArray *tags;
 @property (nonatomic) NSInteger textSize;
 @property (nonatomic) NSString* sideString;
+@property (nonatomic) NSInteger sideCursorLoc;
 @property (nonatomic) NSInteger BRCounter;
+//@property (nonatomic) NSInteger prevCursorLoc;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 

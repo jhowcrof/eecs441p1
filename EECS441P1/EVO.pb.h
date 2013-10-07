@@ -110,20 +110,30 @@ class textChangeMessage : public ::google::protobuf::Message {
   inline ::std::string* release_contentmodified();
   inline void set_allocated_contentmodified(::std::string* contentmodified);
 
+  // optional int64 numChars = 3;
+  inline bool has_numchars() const;
+  inline void clear_numchars();
+  static const int kNumCharsFieldNumber = 3;
+  inline ::google::protobuf::int64 numchars() const;
+  inline void set_numchars(::google::protobuf::int64 value);
+
   // @@protoc_insertion_point(class_scope:textChange.textChangeMessage)
  private:
   inline void set_has_cursorlocation();
   inline void clear_has_cursorlocation();
   inline void set_has_contentmodified();
   inline void clear_has_contentmodified();
+  inline void set_has_numchars();
+  inline void clear_has_numchars();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::int64 cursorlocation_;
   ::std::string* contentmodified_;
+  ::google::protobuf::int64 numchars_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
 
   friend void  protobuf_AddDesc_EVO_2eproto();
   friend void protobuf_AssignDesc_EVO_2eproto();
@@ -229,6 +239,28 @@ inline void textChangeMessage::set_allocated_contentmodified(::std::string* cont
     clear_has_contentmodified();
     contentmodified_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
+}
+
+// optional int64 numChars = 3;
+inline bool textChangeMessage::has_numchars() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void textChangeMessage::set_has_numchars() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void textChangeMessage::clear_has_numchars() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void textChangeMessage::clear_numchars() {
+  numchars_ = GOOGLE_LONGLONG(0);
+  clear_has_numchars();
+}
+inline ::google::protobuf::int64 textChangeMessage::numchars() const {
+  return numchars_;
+}
+inline void textChangeMessage::set_numchars(::google::protobuf::int64 value) {
+  set_has_numchars();
+  numchars_ = value;
 }
 
 
