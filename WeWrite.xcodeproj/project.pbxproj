@@ -77,11 +77,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		163DD41F17DA3E1700AA4C3A /* EECS441P1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EECS441P1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		163DD41F17DA3E1700AA4C3A /* WeWrite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeWrite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		163DD42217DA3E1700AA4C3A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		163DD42417DA3E1700AA4C3A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		163DD42617DA3E1700AA4C3A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		163DD42A17DA3E1700AA4C3A /* EECS441P1-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EECS441P1-Info.plist"; sourceTree = "<group>"; };
+		163DD42A17DA3E1700AA4C3A /* WeWrite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WeWrite-Info.plist"; sourceTree = "<group>"; };
 		163DD42C17DA3E1700AA4C3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		163DD42E17DA3E1700AA4C3A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		163DD43017DA3E1700AA4C3A /* EECS441P1-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EECS441P1-Prefix.pch"; sourceTree = "<group>"; };
@@ -93,9 +93,9 @@
 		163DD43B17DA3E1700AA4C3A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		163DD43D17DA3E1700AA4C3A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		163DD43E17DA3E1700AA4C3A /* ViewController.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
-		163DD44517DA3E1700AA4C3A /* EECS441P1Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EECS441P1Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		163DD44517DA3E1700AA4C3A /* WeWriteTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeWriteTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		163DD44617DA3E1700AA4C3A /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		163DD44E17DA3E1700AA4C3A /* EECS441P1Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EECS441P1Tests-Info.plist"; sourceTree = "<group>"; };
+		163DD44E17DA3E1700AA4C3A /* WeWriteTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WeWriteTests-Info.plist"; sourceTree = "<group>"; };
 		163DD45017DA3E1700AA4C3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		163DD45217DA3E1700AA4C3A /* EECS441P1Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EECS441P1Tests.h; sourceTree = "<group>"; };
 		163DD45317DA3E1700AA4C3A /* EECS441P1Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EECS441P1Tests.m; sourceTree = "<group>"; };
@@ -243,8 +243,8 @@
 		163DD42017DA3E1700AA4C3A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				163DD41F17DA3E1700AA4C3A /* EECS441P1.app */,
-				163DD44517DA3E1700AA4C3A /* EECS441P1Tests.octest */,
+				163DD41F17DA3E1700AA4C3A /* WeWrite.app */,
+				163DD44517DA3E1700AA4C3A /* WeWriteTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -282,7 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				163DD44D17DA3E1700AA4C3A /* Supporting Files */,
-				163DD42A17DA3E1700AA4C3A /* EECS441P1-Info.plist */,
+				163DD42A17DA3E1700AA4C3A /* WeWrite-Info.plist */,
 				163DD42B17DA3E1700AA4C3A /* InfoPlist.strings */,
 				163DD42E17DA3E1700AA4C3A /* main.m */,
 				163DD43017DA3E1700AA4C3A /* EECS441P1-Prefix.pch */,
@@ -305,7 +305,7 @@
 		163DD44D17DA3E1700AA4C3A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				163DD44E17DA3E1700AA4C3A /* EECS441P1Tests-Info.plist */,
+				163DD44E17DA3E1700AA4C3A /* WeWriteTests-Info.plist */,
 				163DD44F17DA3E1700AA4C3A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -437,9 +437,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		163DD41E17DA3E1700AA4C3A /* EECS441P1 */ = {
+		163DD41E17DA3E1700AA4C3A /* WeWrite */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 163DD45717DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "EECS441P1" */;
+			buildConfigurationList = 163DD45717DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "WeWrite" */;
 			buildPhases = (
 				163DD41B17DA3E1700AA4C3A /* Sources */,
 				163DD41C17DA3E1700AA4C3A /* Frameworks */,
@@ -449,14 +449,14 @@
 			);
 			dependencies = (
 			);
-			name = EECS441P1;
+			name = WeWrite;
 			productName = EECS441P1;
-			productReference = 163DD41F17DA3E1700AA4C3A /* EECS441P1.app */;
+			productReference = 163DD41F17DA3E1700AA4C3A /* WeWrite.app */;
 			productType = "com.apple.product-type.application";
 		};
-		163DD44417DA3E1700AA4C3A /* EECS441P1Tests */ = {
+		163DD44417DA3E1700AA4C3A /* WeWriteTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 163DD45A17DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "EECS441P1Tests" */;
+			buildConfigurationList = 163DD45A17DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "WeWriteTests" */;
 			buildPhases = (
 				163DD44017DA3E1700AA4C3A /* Sources */,
 				163DD44117DA3E1700AA4C3A /* Frameworks */,
@@ -468,9 +468,9 @@
 			dependencies = (
 				163DD44B17DA3E1700AA4C3A /* PBXTargetDependency */,
 			);
-			name = EECS441P1Tests;
+			name = WeWriteTests;
 			productName = EECS441P1Tests;
-			productReference = 163DD44517DA3E1700AA4C3A /* EECS441P1Tests.octest */;
+			productReference = 163DD44517DA3E1700AA4C3A /* WeWriteTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -482,7 +482,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Jacob Howcroft";
 			};
-			buildConfigurationList = 163DD41A17DA3E1700AA4C3A /* Build configuration list for PBXProject "EECS441P1" */;
+			buildConfigurationList = 163DD41A17DA3E1700AA4C3A /* Build configuration list for PBXProject "WeWrite" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -494,8 +494,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				163DD41E17DA3E1700AA4C3A /* EECS441P1 */,
-				163DD44417DA3E1700AA4C3A /* EECS441P1Tests */,
+				163DD41E17DA3E1700AA4C3A /* WeWrite */,
+				163DD44417DA3E1700AA4C3A /* WeWriteTests */,
 			);
 		};
 /* End PBXProject section */
@@ -601,7 +601,7 @@
 /* Begin PBXTargetDependency section */
 		163DD44B17DA3E1700AA4C3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 163DD41E17DA3E1700AA4C3A /* EECS441P1 */;
+			target = 163DD41E17DA3E1700AA4C3A /* WeWrite */;
 			targetProxy = 163DD44A17DA3E1700AA4C3A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -660,7 +660,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Google Protocol Buffers\"";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -685,7 +685,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Google Protocol Buffers\"";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -700,9 +700,9 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "EECS441P1/EECS441P1-Prefix.pch";
-				INFOPLIST_FILE = "EECS441P1/EECS441P1-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "EECS441P1/WeWrite-Prefix.pch";
+				INFOPLIST_FILE = "EECS441P1/WeWrite-Info.plist";
+				PRODUCT_NAME = WeWrite;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -715,9 +715,9 @@
 					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "EECS441P1/EECS441P1-Prefix.pch";
-				INFOPLIST_FILE = "EECS441P1/EECS441P1-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "EECS441P1/WeWrite-Prefix.pch";
+				INFOPLIST_FILE = "EECS441P1/WeWrite-Info.plist";
+				PRODUCT_NAME = WeWrite;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -732,8 +732,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EECS441P1/EECS441P1-Prefix.pch";
-				INFOPLIST_FILE = "EECS441P1Tests/EECS441P1Tests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "EECS441P1Tests/WeWriteTests-Info.plist";
+				PRODUCT_NAME = WeWriteTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -749,8 +749,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EECS441P1/EECS441P1-Prefix.pch";
-				INFOPLIST_FILE = "EECS441P1Tests/EECS441P1Tests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "EECS441P1Tests/WeWriteTests-Info.plist";
+				PRODUCT_NAME = WeWriteTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -759,7 +759,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		163DD41A17DA3E1700AA4C3A /* Build configuration list for PBXProject "EECS441P1" */ = {
+		163DD41A17DA3E1700AA4C3A /* Build configuration list for PBXProject "WeWrite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				163DD45517DA3E1700AA4C3A /* Debug */,
@@ -768,7 +768,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		163DD45717DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "EECS441P1" */ = {
+		163DD45717DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "WeWrite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				163DD45817DA3E1700AA4C3A /* Debug */,
@@ -777,7 +777,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		163DD45A17DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "EECS441P1Tests" */ = {
+		163DD45A17DA3E1700AA4C3A /* Build configuration list for PBXNativeTarget "WeWriteTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				163DD45B17DA3E1700AA4C3A /* Debug */,

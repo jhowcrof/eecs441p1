@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "163DD41E17DA3E1700AA4C3A"
                BuildableName = "EECS441P1.app"
-               BlueprintName = "EECS441P1"
-               ReferencedContainer = "container:EECS441P1.xcodeproj">
+               BlueprintName = "WeWrite"
+               ReferencedContainer = "container:WeWrite.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "163DD44417DA3E1700AA4C3A"
                BuildableName = "EECS441P1Tests.octest"
-               BlueprintName = "EECS441P1Tests"
-               ReferencedContainer = "container:EECS441P1.xcodeproj">
+               BlueprintName = "WeWriteTests"
+               ReferencedContainer = "container:WeWrite.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,8 +44,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "163DD41E17DA3E1700AA4C3A"
             BuildableName = "EECS441P1.app"
-            BlueprintName = "EECS441P1"
-            ReferencedContainer = "container:EECS441P1.xcodeproj">
+            BlueprintName = "WeWrite"
+            ReferencedContainer = "container:WeWrite.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -63,8 +63,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "163DD41E17DA3E1700AA4C3A"
             BuildableName = "EECS441P1.app"
-            BlueprintName = "EECS441P1"
-            ReferencedContainer = "container:EECS441P1.xcodeproj">
+            BlueprintName = "WeWrite"
+            ReferencedContainer = "container:WeWrite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -81,8 +81,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "163DD41E17DA3E1700AA4C3A"
             BuildableName = "EECS441P1.app"
-            BlueprintName = "EECS441P1"
-            ReferencedContainer = "container:EECS441P1.xcodeproj">
+            BlueprintName = "WeWrite"
+            ReferencedContainer = "container:WeWrite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

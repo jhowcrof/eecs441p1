@@ -39,7 +39,7 @@
 @property (nonatomic) NSString* sideString;
 @property (nonatomic) NSInteger sideCursorLoc;
 @property (nonatomic) NSInteger BRCounter;
-//@property (nonatomic) NSInteger prevCursorLoc;
+@property (nonatomic) NSRange selectedRange;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 

@@ -366,9 +366,12 @@
                 //self.textSize = [[[self myTextView] text] length];
 
                 
-                NSRange selectedRange = [self.myTextView selectedRange];
+                
+                [self.myTextView setSelectedRange:self.selectedRange];
+                /*NSRange selectedRange = [self.myTextView selectedRange];
                 selectedRange.location = self.sideCursorLoc;
-                [self.myTextView setSelectedRange:selectedRange];
+                NSLog(@"What is the cursor location? side:%d main:%d", selectedRange.location, [[self myTextView] selectedRange].location);
+                [self.myTextView setSelectedRange:selectedRange];*/
                 
                 
             }
@@ -490,23 +493,23 @@
 //-------------------------------------------------//
 
 -(void) insertSide:(NSString *)text atLocation:(int)location amount:(int)numChars{
-    NSLog(@"insertSide - Location: %d", location);
-    if (location - 1 == 0) {
+    NSLog(@"insertSide - Location: %d NumChars: %d", location, numChars);
+    if (location - numChars == 0) {
         // Text is at start
         self.sideString = [NSString stringWithFormat:@"%@%@", text, self.sideString];
-    } else if (location - 1 == self.sideString.length) {
+    } else if (location - numChars == self.sideString.length) {
         // Text is at end
         self.sideString = [NSString stringWithFormat:@"%@%@", self.sideString, text];
     } else {
         // Text is in middle
-        self.sideString = [NSString stringWithFormat:@"%@%@%@", [self.sideString substringToIndex:location-1], text, [self.sideString substringFromIndex:location-1]];
+        self.sideString = [NSString stringWithFormat:@"%@%@%@", [self.sideString substringToIndex:location-numChars], text, [self.sideString substringFromIndex:location-numChars]];
     }
     
-    if(location <= self.sideCursorLoc){
+    if(location - numChars <= self.sideCursorLoc){
         self.sideCursorLoc += numChars;
     }
     
-    NSLog(@"inserSide FINISH");
+    NSLog(@"insertSide FINISH");
 }
 
 -(void) deleteSide:(int)location amount:(int)numChars{
@@ -514,7 +517,7 @@
     if (location == 0) {
         // Delete is at start
         self.sideString = [self.sideString substringFromIndex:numChars];
-    } else if (location == self.sideString.length - 2) {
+    } else if (location == self.sideString.length - numChars - 1) {
         // Delete is at end
         self.sideString = [self.sideString substringToIndex:location];
     } else {
@@ -527,7 +530,7 @@
     if (location < self.sideCursorLoc && location+numChars > self.sideCursorLoc) {
         self.sideCursorLoc -= self.sideCursorLoc - location;
     } else if (location < self.sideCursorLoc){
-    self.sideCursorLoc -= numChars;
+        self.sideCursorLoc -= numChars;
     }
     
     NSLog(@"deleteSide FINISH");
@@ -535,13 +538,12 @@
 }
 
 -(void) insertMain:(NSString *)text atLocation:(int)location amount:(int)numChars{
-    NSRange selectedRange = [self.myTextView selectedRange];
+    self.selectedRange = [self.myTextView selectedRange];
     NSLog(@"insertMain - Location: %d", location);
-    if (location - 1 == 0) {
-
+    if (location - numChars == 0) {
         // Text is at start
         [[self myTextView] setText:[NSString stringWithFormat:@"%@%@", text, [[self myTextView] text]]];
-    } else if (location - 1 == [[[self myTextView] text] length]) {
+    } else if (location - numChars == [[[self myTextView] text] length]) {
         NSLog(@"GOT HERE 1");
 
         // Text is at end
@@ -551,44 +553,46 @@
 
         // Text is in middle
         [[self myTextView]
-            setText:[NSString stringWithFormat:@"%@%@%@", [self.myTextView.text substringToIndex:location-1], text, [self.myTextView.text substringFromIndex:location-1]]];
+            setText:[NSString stringWithFormat:@"%@%@%@", [self.myTextView.text substringToIndex:location-numChars], text, [self.myTextView.text substringFromIndex:location-numChars]]];
     }
     self.textSize = [[[self myTextView] text] length];
     
-    if(location <= selectedRange.location){
-        selectedRange.location += numChars;
+    if(location - numChars <= self.selectedRange.location){
+        NSRange newRange = self.selectedRange;
+        newRange.location += numChars;
+        [self setSelectedRange:newRange];
     }
-
-    [self.myTextView setSelectedRange:selectedRange];
     
-    NSLog(@"inserMain FINISH");
+    NSLog(@"insertMain FINISH");
 
 }
 
 -(void) deleteMain:(int)location amount:(int)numChars{
-    NSRange selectedRange = [self.myTextView selectedRange];
+    self.selectedRange = [self.myTextView selectedRange];
     NSLog(@"deleteMain - Location: %d", location);
     if (location == 0) {
         // Delete is at start
-        [[self myTextView] setText:[self.sideString substringFromIndex:numChars]];
-    } else if (location == self.sideString.length - 2) {
+        [[self myTextView] setText:[self.myTextView.text substringFromIndex:numChars]];
+    } else if (location == self.myTextView.text.length - numChars - 1) {
         // Delete is at end
-        [[self myTextView] setText:[self.sideString substringToIndex:location]];
+        [[self myTextView] setText:[self.myTextView.text substringToIndex:location]];
     } else {
         // Text is in middle
         [[self myTextView]
-         setText:[NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + numChars]]];
+        setText:[NSString stringWithFormat:@"%@%@", [self.myTextView.text substringToIndex:location], [self.myTextView.text substringFromIndex:location + numChars]]];
     }
     
     self.textSize = [[[self myTextView] text] length];
     
-    if (location < selectedRange.location && location+numChars > selectedRange.location) {
-        selectedRange.location -= selectedRange.location - location;
-    } else if (location < selectedRange.location){
-        selectedRange.location -= numChars;
+    if (location < self.selectedRange.location && location+numChars > self.selectedRange.location) {
+        NSRange newRange = [self selectedRange];
+        newRange.location -= [self selectedRange].location - location;
+        [self setSelectedRange:newRange];
+    } else if (location < self.selectedRange.location){
+        NSRange newRange = [self selectedRange];
+        newRange.location -= [self selectedRange].location;
+        [self setSelectedRange:newRange];
     }
-    
-    [self.myTextView setSelectedRange:selectedRange];
     
     NSLog(@"deleteMain FINISH");
 
