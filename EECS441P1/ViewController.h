@@ -38,7 +38,6 @@
 @property (nonatomic) NSInteger textSize;
 @property (nonatomic) NSString* sideString;
 @property (nonatomic) NSInteger BRCounter;
-//@property (nonatomic) NSRange *range;
 
 @property (nonatomic, weak) id <ViewControllerDelegate> delegate;
 

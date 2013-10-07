@@ -65,6 +65,7 @@
     /*      EVO ALGO        */
     self.sideString = [[NSString alloc] initWithString:self.myTextView.text];
     self.BRCounter = 0;
+    [[self client] resumeEvents];
 }
 
 - (void)didReceiveMemoryWarning
@@ -97,6 +98,8 @@
                 }
             }];
         }
+    } else if ([title isEqual:@"Group Closed"]) {
+        segueBack:nil;
     }
 }
 
@@ -175,6 +178,9 @@
     // 5. In the receive handler, handle insert and delete.  Also update former size.
     // 6. Everytime the text changes, update the former size (after you broadcast).
     */
+    if ([[self client] currentSessionHasEnded]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     
     if(self.textSize < [[[self myTextView] text] length]){
         // Adding text
@@ -200,7 +206,7 @@
         
     }
     
-    
+    self.textSize = [[[self myTextView] text] length];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -250,7 +256,6 @@
             }
         }];
     }
-    
 }
 
 
@@ -322,100 +327,55 @@
 //-------------------------------------------------//
 
 -(void)client:(CollabrifyClient *)client receivedEventWithOrderID:(int64_t)orderID submissionRegistrationID:(int32_t)submissionRegistrationID eventType:(NSString *)eventType data:(NSData *)data {
-    
-    /*ORIG
-     
-    int length = [data length];
-    char data_char[length];
-    textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
-    [data getBytes:data_char length:length];
-    rcvd_msg->ParseFromArray(data_char, length);
-    NSLog(@"--%s", rcvd_msg->contentmodified().c_str());
-
-    if (submissionRegistrationID != -1) {
-        NSLog(@"This is your own submission, no need to update.");
-        NSLog(@"Setting cursorLocation to: %lu", (unsigned long)self.myTextView.selectedRange.location);
-        self.textSize = self.myTextView.selectedRange.location;
-        return;
-    }
-    
+    NSLog(@"Received event with order ID: %lld, type: %@", orderID, eventType);
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSRange selectedRange = [self.myTextView selectedRange];
-        //[self.myTextView setEditable:NO];
-        [[self myTextView] setScrollEnabled:NO];
+        // 1: Parse the protocol buffer
+        int length = [data length];
+        char data_char[length];
+        textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
+        [data getBytes:data_char length:length];
+        rcvd_msg->ParseFromArray(data_char, length);
         
-        NSLog(@"Event Type is: %@", eventType);
-        NSLog(@"Old cursor location: %i", self.textSize);
+        NSString *text = [NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]];
         
-        if([eventType isEqual:@"UndoRedo"]){
-            NSLog(@"Setting UndoRedo Response: %@", [NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]);
-            [self.myTextView setText:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]];
-        } else if([eventType isEqual:@"Insert"]){
-            NSLog(@"Setting Insert Response: %@", [self.myTextView.text stringByAppendingString:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]]);
-            [self.myTextView setText:[self.myTextView.text stringByAppendingString:[NSString stringWithCString:rcvd_msg->contentmodified().c_str() encoding:[NSString defaultCStringEncoding]]]];
+        // 2: If this is your own submission
+        //      - Update the counter
+        //      - Update Side string
+        //      - If the all broadcasts received, set myTextView text to sideString
+        //      - Set the cursor to the correct location
+        if (submissionRegistrationID != -1) {
+            self.BRCounter--;
+            
+            if([eventType isEqual:@"Insert"]){
+                [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+            } else {
+                [self deleteSide:rcvd_msg->cursorlocation()];
+            }
+            
+            if (self.BRCounter == 0) {
+                [self.myTextView setText:self.sideString];
+            }
         } else {
-            NSLog(@"Setting Delete Response: %@", [self.myTextView.text substringToIndex:self.textSize-1]);
-            [self.myTextView setText:[self.myTextView.text substringToIndex:self.textSize-1]];
+            // SET THE CURSOR LOCATION IMPLEMENTATION
+            if (self.BRCounter == 0) {
+                // REFLECT CHANGES IN ORIGINAL AND SIDE
+                if ([eventType isEqual:@"Insert"]) {
+                    [self insertMain:text atLocation:rcvd_msg->cursorlocation()];
+                    [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+                } else {
+                    [self deleteMain:rcvd_msg->cursorlocation()];
+                    [self deleteSide:rcvd_msg->cursorlocation()];
+                }
+            } else {
+                // REFLECT CHANGES ONLY IN SIDE
+                if ([eventType isEqual:@"Insert"]) {
+                    [self insertSide:text atLocation:rcvd_msg->cursorlocation()];
+                } else {
+                    [self deleteSide:rcvd_msg->cursorlocation()];
+                }
+            }
         }
-        
-        NSLog(@"Setting cursorLocation to: %lli", rcvd_msg->cursorlocation());
-        self.textSize = rcvd_msg->cursorlocation();
-        
-        [[self myTextView] setScrollEnabled:YES];
-        //[self.myTextView setEditable:YES];
-        [self.myTextView setSelectedRange:selectedRange];
     });
-    */
-    
-    // 1: Parse the protocol buffer
-    int length = [data length];
-    char data_char[length];
-    textChange::textChangeMessage *rcvd_msg = new textChange::textChangeMessage();
-    [data getBytes:data_char length:length];
-    rcvd_msg->ParseFromArray(data_char, length);
-    
-    // 2: If this is your own submission
-    //      - Update the counter
-    //      - Update Side string
-    //      - If the all broadcasts received, set myTextView text to sideString
-    //      - Set the cursor to the correct location
-    if (submissionRegistrationID != -1) {
-        self.BRCounter--;
-        
-        if([eventType isEqual:@"Insert"]){
-            [self insertMOD:self.sideString];
-        }
-        else{
-            [self deleteMOD:self.sideString];
-        }
-        
-        if (self.BRCounter == 0) {
-            [self.myTextView setText:self.sideString];
-        }
-        
-        
-        // SET THE CURSOR LOCATION IMPLEMENTATION
-    } else {
-        if (self.BRCounter == 0) {
-            // REFLECT CHANGES IN ORIGINAL AND SIDE
-            if ([eventType isEqual:@"Insert"]) {
-                [self insertMOD:self.myTextView.text];
-                [self insertMOD:self.sideString];
-            } else {
-                [self deleteMOD:self.myTextView.text];
-                [self deleteMOD:self.sideString];
-            }
-        } else {
-            // REFLECT CHANGES ONLY IN SIDE
-            if ([eventType isEqual:@"Insert"]) {
-                [self insertMOD:self.myTextView.text];
-                [self insertMOD:self.sideString];
-            } else {
-                [self deleteMOD:self.myTextView.text];
-                [self deleteMOD:self.sideString];
-            }
-        }
-    }
 }
 
 //-------------------------------------------------//
@@ -491,11 +451,72 @@
 //                                                 //
 //-------------------------------------------------//
 
--(void) insertMOD:(NSString*) stringToMod{
-    
+-(void) insertSide:(NSString *)text atLocation:(int)location{
+    NSLog(@"Location: %d", location);
+    if (location - 1 == 0) {
+        // Text is at start
+        self.sideString = [NSString stringWithFormat:@"%@%@", text, self.sideString];
+    } else if (location - 1 == self.sideString.length) {
+        // Text is at end
+        self.sideString = [NSString stringWithFormat:@"%@%@", self.sideString, text];
+    } else {
+        // Text is in middle
+        self.sideString = [NSString stringWithFormat:@"%@%@%@", [self.sideString substringToIndex:location-1], text, [self.sideString substringFromIndex:location-1]];
+    }
 }
 
--(void) deleteMOD:(NSString*) stringToMod{
+-(void) deleteSide:(int)location{
+    NSLog(@"Location: %d", location);
+    if (location == 0) {
+        // Delete is at start
+        self.sideString = [self.sideString substringFromIndex:1];
+    } else if (location == self.sideString.length - 2) {
+        // Delete is at end
+        self.sideString = [self.sideString substringToIndex:location];
+    } else {
+        // Text is in middle
+        self.sideString =
+            [NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + 1]];
+    }
+}
+
+-(void) insertMain:(NSString *)text atLocation:(int)location{
+    NSRange selectedRange = [self.myTextView selectedRange];
+    NSLog(@"Location: %d", location);
+    if (location - 1 == 0) {
+        // Text is at start
+        [[self myTextView] setText:[NSString stringWithFormat:@"%@%@", text, [[self myTextView] text]]];
+    } else if (location - 1 == [[[self myTextView] text] length]) {
+        // Text is at end
+        [[self myTextView] setText:[NSString stringWithFormat:@"%@%@", [[self myTextView] text], text]];
+    } else {
+        // Text is in middle
+        [[self myTextView]
+            setText:[NSString stringWithFormat:@"%@%@%@", [self.myTextView.text substringToIndex:location-1], text, [self.myTextView.text substringFromIndex:location-1]]];
+    }
+    
+    self.textSize = [[[self myTextView] text] length];
+    [self.myTextView setSelectedRange:selectedRange];
+}
+
+-(void) deleteMain:(int)location{
+    NSRange selectedRange = [self.myTextView selectedRange];
+    NSLog(@"Location: %d", location);
+    if (location == 0) {
+        // Delete is at start
+        [[self myTextView] setText:[self.sideString substringFromIndex:1]];
+    } else if (location == self.sideString.length - 2) {
+        // Delete is at end
+        [[self myTextView] setText:[self.sideString substringToIndex:location]];
+    } else {
+        // Text is in middle
+        [[self myTextView]
+         setText:[NSString stringWithFormat:@"%@%@", [self.sideString substringToIndex:location], [self.sideString substringFromIndex:location + 1]]];
+    }
+    
+    self.textSize = [[[self myTextView] text] length];
+    [self.myTextView setSelectedRange:selectedRange];
+    
     
 }
 

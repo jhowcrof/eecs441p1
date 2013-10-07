@@ -58,6 +58,7 @@
 - (void)joinSession:(NSString *)password {
     [[self client] joinSessionWithID:[self session].sessionID
                             password:password
+                         startPaused:YES
                    completionHandler:^(int64_t maxOrderID, int32_t baseFileSize, CollabrifyError *error) {
         if([error type] == CollabrifyServerSideErrorInvalidSessionPassword){
             UIAlertView *passwordInvalidError = [[UIAlertView alloc] initWithTitle:@"Invalid Password" message:@"The password you have entered invalid" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
